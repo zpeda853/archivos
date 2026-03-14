@@ -1,1 +1,919 @@
-hola
+46 INTRODUCCIÓN CAP. 1
+de software requiere una distinción entre la especificación y la implementación, algo que OSI hace con
+mucho cuidado y que TCP/IP no. En consecuencia, el modelo TCP/IP no sirve mucho de guía para diseñar
+modernas redes que utilicen nuevas tecnologías.
+Segundo, el modelo TCP/IP no es nada general y no es muy apropiado para describir cualquier pila
+de protocolos aparte de TCP/IP. Por ejemplo, es imposible tratar de usar el modelo TCP/IP para describir
+Bluetooth.
+Tercero, la capa de enlace en realidad no es una capa en el sentido normal del término como se utiliza
+en el contexto de los protocolos en capas. Es una interfaz (entre las capas de red y de enlace de datos). La
+diferencia entre una interfaz y una capa es crucial, y hay que tener mucho cuidado al respecto.
+Cuarto, el modelo TCP/IP no distingue entre la capa física y la de enlace de datos. Éstas son comple-
+tamente distintas. La capa física trata sobre las características de transmisión del cable de cobre, la fibra
+óptica y la comunicación inalámbrica. La tarea de la capa de enlace de datos es delimitar el inicio y el fin
+de las tramas, además de transmitirlas de un extremo al otro con el grado deseado de confiabilidad. Un
+modelo apropiado debe incluir ambas capas por separado. El modelo TCP/IP no hace esto.
+Por último, aunque los protocolos IP y TCP se diseñaron e implementaron con sumo cuidado, muchos
+de los otros protocolos se fueron creando según las necesidades del momento, producidos generalmente
+por un par de estudiantes de licenciatura que los mejoraban hasta fastidiarse. Después las implementacio-
+nes de los protocolos se distribuían en forma gratuita, lo cual trajo como consecuencia que se utilizaran
+amplia y profundamente en muchas partes y, por ende, eran difíciles de reemplazar. Algunos de ellos son
+un poco vergonzosos en la actualidad. Por ejemplo, el protocolo de terminal virtual TELNET se diseñó
+para una terminal de Teletipo mecánica de 10 caracteres por segundo. No sabe nada sobre las interfaces
+gráficas de usuario y los ratones. Sin embargo, aún se sigue usando a 30 años de su creación.
+1.5
+REDES DE EJEMPLO
+El tema de las redes de computadoras cubre muchos tipos distintos de redes, grandes y pequeñas, popula-
+res y no tanto. Tienen distintos objetivos, escalas y tecnologías. En las siguientes secciones analizaremos
+algunos ejemplos para tener una idea de la variedad que podemos encontrar en el área de las redes de
+computadoras.
+Empezaremos con Internet, que tal vez sea la red más popular; analizaremos su historia, evolución y
+tecnología. Después consideraremos la red de teléfonos móviles. Técnicamente es muy distinta de Inter-
+net y contrasta muy bien con ella. Más adelante introduciremos el IEEE 802.11, el estándar dominante
+para las redes LAN inalámbricas. Por último, analizaremos las redes RFID y de sensores, tecnologías que
+extienden el alcance de la red para incluir al mundo físico y los objetos cotidianos.
+1.5.1 Internet
+En realidad Internet no es una red, sino una enorme colección de distintas redes que utilizan ciertos pro-
+tocolos comunes y proveen ciertos servicios comunes. Es un sistema inusual en cuanto a que nadie la
+planeó y nadie la controla. Para comprender mejor esto, empecemos desde el inicio para ver cómo se ha
+desarrollado y por qué. Si desea leer una maravillosa historia de Internet, le recomendamos ampliamente
+el libro de Jim Naughton (2000). Es uno de esos libros inusuales que no sólo son divertidos, sino que tam-
+bién cuenta con 20 páginas de ibídems y obras citadas (ob. cit.) para el verdadero historiador. Una parte
+del material de esta sección se basa en ese libro.
+Claro que también se han escrito innumerables libros sobre Internet y sus protocolos. Para obtener
+más información puede consultar a Maufer (1999).
+  
+
+SEC. 1.5 REDES DE EJEMPLO
+47
+ARPANET
+La historia empieza a finales de la década de 1950. En la cúspide de la Guerra Fría, el DoD de Estados
+Unidos quería una red de comando y control que pudiera sobrevivir a una guerra nuclear. En ese tiempo
+todas las comunicaciones militares utilizaban la red telefónica pública, que se consideraba vulnerable.
+Podemos ver la razón de esta creencia en la figura 1-25(a). Los puntos negros representan las oficinas
+de conmutación telefónica, cada una de las cuales se conectaba a miles de teléfonos. Estas oficinas de
+conmutación se conectaban a su vez con oficinas de conmutación de mayor nivel (oficinas interurbanas),
+para formar una jerarquía nacional con sólo una pequeña cantidad de redundancia. La vulnerabilidad del
+sistema era que, si se destruían unas cuantas oficinas interurbanas clave, se podía fragmentar el sistema
+en muchas islas aisladas.
+Oficina de
+conmutación
+Oficina
+interurbana
+(a)
+(b)
+Figura 1-25. (a) Estructura de un sistema telefónico. (b) El sistema de conmutación distribuida propuesto por Baran.
+Alrededor de la década de 1960, el DoD otorgó un contrato a la empresa RAND Corporation para
+buscar una solución. Uno de sus empleados, Paul Baran, ideó el diseño tolerante a fallas altamente dis-
+tribuido de la figura 1-25(b). Como las rutas entre dos oficinas de conmutación cualesquiera eran ahora
+mucho más largas de lo que las señales análogas podían viajar sin distorsión, Baran propuso el uso de la
+tecnología de conmutación de paquetes digital, y escribió varios informes para el DoD en donde describió
+sus ideas con detalle (Baran, 1964). A los oficiales del Pentágono les gustó el concepto y pidieron a AT&T,
+que en ese entonces era el monopolio telefónico nacional en Estados Unidos, que construyera un prototi-
+po. Pero AT&T hizo caso omiso de las ideas de Baran. La corporación más grande y opulenta del mundo
+no iba a permitir que un joven impertinente les dijera cómo construir un sistema telefónico. Dijeron que
+la idea de Baran no se podía construir y se desechó.
+Pasaron otros siete años y el DoD seguía sin poder obtener un mejor sistema de comando y control.
+Para comprender lo que ocurrió después tenemos que remontarnos hasta octubre de 1957, cuando la anti-
+gua Unión Soviética venció a Estados Unidos en la carrera espacial con el lanzamiento del primer satélite
+artificial, Sputnik. Cuando el presidente Eisenhower trató de averiguar quién se había quedado dormido
+en los controles, quedó consternado al descubrir que el Ejército, la Marina y la Fuerza Aérea estaban
+riñendo por el presupuesto de investigación del Pentágono. Su respuesta inmediata fue crear una sola
+  
+
+48 INTRODUCCIÓN CAP. 1
+organización de investigación de defensa, ARPA (Agencia de Proyectos de Investigación Avanzados, del
+inglés Advanced Research Projects Agency). La ARPA no tenía científicos ni laboratorios; de hecho, sólo
+tenía una oficina y un pequeño presupuesto (según los estándares del Pentágono). Para realizar su trabajo
+otorgaba concesiones y contratos a las universidades y las compañías cuyas ideas fueran prometedoras.
+Durante los primeros años, la ARPA trató de averiguar cuál debería ser su misión. En 1967 Larry
+Roberts, director de la ARPA, quien trataba de averiguar cómo proveer acceso remoto a las computadoras,
+giró su atención a las redes. Contactó a varios expertos para decidir qué hacer. Uno de ellos de nombre
+Wesley Clark, sugirió construir una subred de conmutación de paquetes y conectar cada host a su propio
+enrutador.
+Después de cierto escepticismo inicial, Roberts aceptó la idea y presentó un documento algo impre-
+ciso sobre ella en el Simposio SIGOPS de la ACM sobre Principios de Sistemas Operativos que se llevó
+a cabo en Gatlinburg, Tennessee, a finales de 1967 (Roberts, 1967). Para gran sorpresa de Roberts había
+otro documento en la conferencia que describía un sistema similar que no sólo se había diseñado, sino
+que también se había implementado por completo bajo la dirección de Donald Davies en el Laboratorio
+Nacional de Física (NPL), en Inglaterra. El sistema del NPL no era un sistema nacional (sólo conectaba
+varias computadoras en su campus), pero demostraba que la conmutación de paquetes podía funcionar.
+Además citaba el trabajo anterior de Baran que había sido descartado. Roberts regresó de Gatlinburg
+determinado a construir lo que después se convirtió en ARPANET.
+La subred consistiría de minicomputadoras llamadas IMP (Procesadores de Mensajes de Interfaz,
+del inglés Interface Message Processors), conectadas por líneas de transmisión de 56 kbps. Para una con-
+fiabilidad alta, cada IMP se conectaría por lo menos a otras dos. La subred sería de datagramas, de manera
+que si se destruían algunas líneas e IMP, los mensajes se podrían encaminar nuevamente de manera auto-
+mática a través de rutas alternativas.
+Cada nodo de la red debía estar constituido por una IMP y un host, en el mismo cuarto, conectados por
+un cable corto. Un host podía enviar mensajes de hasta 8 063 bits a su IMP, que a su vez los descompon-
+dría en paquetes de 1 008 bits a lo más y los enviaría de manera independiente a su destino. Cada paquete
+se recibía en su totalidad antes de enviarlo, por lo que la subred fue la primera red electrónica de conmu-
+tación de paquetes de almacenamiento y envío.
+Entonces ARPA lanzó una convocatoria para construir la subred y fueron 12 compañías las que lici-
+taron. Después de evaluar todas las propuestas, la ARPA seleccionó a BBN, una empresa de consultoría con
+base en Cambridge, Massachusetts, y en diciembre de 1968 le otorgó un contrato para construir la subred y
+escribir el software. BBN optó por usar como IMP las minicomputadoras Honeywell DDP-316 modificadas
+de manera especial con palabras de 16 bits y 12 KB de memoria básica. Los IMP no tenían discos, ya que las
+partes móviles se consideraban no confiables. Los IMP se interconectaron mediante líneas de 56 kbps que
+se rentaban a las compañías telefónicas. Aunque ahora 56 kbps son la opción para los adolescentes que no
+pueden pagar DSL o cable, en ese entonces era lo mejor que el dinero podía comprar.
+El software se dividió en dos partes: subred y host. El software de subred consistía del extremo IMP
+de la conexión host a IMP, del protocolo IMP a IMP y de un protocolo de IMP de origen a IMP de destino
+diseñado para mejorar la confiabilidad. En la figura 1-26 se muestra el diseño original de la ARPANET.
+Fuera de la subred también se necesitaba software, es decir, el extremo host de la conexión host a
+IMP, el protocolo host a host y el software de aplicación. Pronto quedó claro que BBN consideraba que
+al aceptar un mensaje en un cable host a IMP y colocarlo en el cable host a IMP de destino, su trabajo
+estaba terminado.
+Pero Roberts tenía un problema: los hosts también necesitaban software. Para lidiar con ello, convocó
+una junta de investigadores de redes, que en su mayor parte eran estudiantes de licenciatura, en Snowbird,
+Utah, en el verano de 1969. Los estudiantes esperaban que un experto en redes les explicara el gran diseño
+de la red y su software, y que después les asignara la tarea de escribir parte de ella. Quedaron pasmados
+  
+
+SEC. 1.5 REDES DE EJEMPLO
+49
+Protocolo host a host
+Host
+Protocolo
+host a IMP
+Protocolo de IMP de origen a IMP de destino
+Protocolo IMP a IMP
+Protocolo
+IMP a IMP
+Subred
+IMP
+Figura 1-26. Diseño original de ARPANET.
+al descubrir que no había ningún experto en redes ni un gran diseño. Tuvieron que averiguar qué hacer
+por su cuenta.
+Sin embargo, de alguna forma una red experimental se puso en línea en diciembre de 1969 con cua-
+tro nodos: en UCLA, UCSB, SRI y la Universidad de Utah. Se eligieron estos cuatro nodos debido a
+que todos tenían una gran cantidad de contratos de ARPA y todos tenían computadoras host distintas y
+totalmente incompatibles (sólo para hacerlo más divertido). Dos meses antes se había enviado el primer
+mensaje de host a host desde el nodo de UCLA por un equipo dirigido por Len Kleinrock (pionero de la
+teoría de conmutación de paquetes), hasta el nodo de SRI. La red creció con rapidez a medida que se en-
+tregaban e instalaban más equipos IMP; pronto abarcó Estados Unidos. En la figura 1-27 se muestra qué
+tan rápido creció ARPANET durante los primeros tres años.
+SRI UTAH
+SRI UTAH MIT
+SRI UTAH
+ILLINOIS MIT LINCOLN CASE
+UCSB
+UCSB SDC UCSB
+SDC
+STAN
+UCLA
+RAND
+BBN
+UCLA
+RAND
+(b) (c)
+SRI
+LBL
+MCCLELLAN
+AMES TIP
+AMES IMP
+X-PARC
+STANFORD
+FNWC
+RAND
+TINKER
+UCSB UCSD
+UCLA
+(a)
+MCCLELLAN
+SRI UTAH
+NCAR GWC LINCOLN CASE
+RADC
+ILLINOIS
+CARN
+AMES
+UCSB
+USC
+LINC
+MITRE
+MIT
+STAN
+SDC
+ETAC
+UCLA
+RAND
+TINKER
+BBN
+HARVARD NBS
+(d)
+BBN
+CARN
+HARVARD BURROUGHS
+UTAH
+ILLINOIS MIT
+CCA
+BBN
+HARVARD
+ABERDEEN
+NBS
+ETAC
+ARPA
+MITRE
+SAAC
+LINC
+RADC
+BELVOIR
+CMU
+UCLA
+SDC
+USC
+NOAA
+GWC CASE
+(e)
+Figura 1-27. (e) Septiembre de 1972.
+Crecimiento de ARPANET. (a) Diciembre de 1969. (b) Julio de 1970. (c) Marzo de 1971. (d) Abril de 1972.
+  
+
+50 INTRODUCCIÓN CAP. 1
+Además de ayudar al crecimiento de la recién creada ARPANET, la ARPA también patrocinó la in-
+vestigación sobre el uso de las redes satelitales y las redes de radio de paquetes móviles. En una famosa
+demostración, un camión que recorría California usó la red de radio de paquetes para enviar mensajes
+a SRI, que a su vez los envió a través de ARPANET a la Costa Este, en donde se enviaron al Colegio
+Universitario, en Londres, a través de la red satelital. Gracias a esto, un investigador en el camión pudo
+utilizar una computadora en Londres mientras conducía por California.
+Este experimento también demostró que los protocolos existentes de ARPANET no eran adecuados
+para trabajar en distintas redes. Esta observación condujo a más investigaciones sobre protocolos, lo que
+culminó con la invención del modelo y los protocolos TCP/IP (Cerf y Kahn, 1974). El modelo TCP/IP se
+diseñó de manera específica para manejar la comunicación a través de interredes, algo que se volvía día
+con día más importante a medida que más redes se conectaban a ARPANET.
+Para fomentar la adopción de estos nuevos protocolos, la ARPA otorgó varios contratos para im-
+plementar TCP/IP en distintas plataformas de computadora, incluyendo sistemas de IBM, DEC y HP,
+así como para el UNIX, de Berkeley. Los investigadores de la Universidad de California, en Berkeley,
+rediseñaron el modelo TCP/IP con una nueva interfaz de programación llamada sockets para la futura
+versión 4.2BSD del UNIX, de Berkeley. También escribieron muchos programas de aplicación, utilería y
+administración para mostrar lo conveniente que era usar la red con sockets.
+La sincronización era perfecta. Muchas universidades acababan de adquirir una segunda o tercera
+computadoras VAX y una LAN para conectarlas, pero no tenían software de red. Cuando llegó el 4.2BSD
+junto con TCP/IP, los sockets y muchas utilerías de red, el paquete completo se adoptó de inmediato.
+Además, con TCP/IP era fácil conectar las redes LAN a ARPANET, y muchas lo hicieron.
+Durante la década de 1980 se conectaron redes adicionales (en especial redes LAN) a ARPANET.
+A medida que aumentó la escala, el proceso de buscar hosts se hizo cada vez más costoso, por lo que se
+creó el DNS (Sistema de Nombres de Dominio, del inglés Domain Name System) para organizar a las
+máquinas en dominios y resolver nombres de host en direcciones IP. Desde entonces, el DNS se convirtió
+en un sistema de base de datos distribuido y generalizado para almacenar una variedad de información
+relacionada con la asignación de nombres. En el capítulo 7 estudiaremos este sistema con detalle.
+NSFNET
+A finales de la década de 1970, la NSF (Fundación Nacional de la Ciencia, del inglés U.S. National
+Science Foundation) vio el enorme impacto que había tenido ARPANET en la investigación universitaria
+al permitir que científicos de todo el país compartieran datos y colaboraran en proyectos de investigación.
+Pero para entrar a ARPANET una universidad tenía que tener un contrato de investigación con el
+DoD. Como muchas no tenían un contrato, la respuesta inicial de la NSF fue patrocinar la Red de Ciencias
+Computacionales (CSNET, del inglés Computer Science Network) en 1981. Esta red conectó los departa-
+mentos de ciencias computacionales y los laboratorios de investigación industrial a ARPANET por medio
+de líneas de marcación y rentadas. A finales de la década de 1980, la NSF fue más allá y decidió diseñar
+un sucesor para ARPANET que estuviera abierto a todos los grupos universitarios de investigación.
+Para tener algo concreto con qué empezar, la NSF decidió construir una red troncal (backbone) para
+conectar sus seis centros de supercomputadoras en San Diego, Boulder, Champaign, Pittsburgh, Ithaca y
+Princeton. Cada supercomputadora recibió un hermano pequeño que consistía en una microcomputadora
+LSI-11 llamada fuzzball. Las fuzzballs se conectaron a líneas rentadas de 56 kbps para formar la subred,
+la misma tecnología de hardware que utilizaba ARPANET. Sin embargo, la tecnología de software era
+diferente: las fuzzballs funcionaban con TCP/IP desde un principio, así que se convirtió en la primera
+WAN de TCP/IP.
+La NSF también patrocinó algunas redes regionales (finalmente fueron cerca de 20) que se conectaban
+a la red troncal para permitir que los usuarios de miles de universidades, laboratorios de investigación,
+  
+
+SEC. 1.5 REDES DE EJEMPLO
+51
+bibliotecas y museos tuvieran acceso a cualquiera de las supercomputadoras y se comunicaran entre
+sí. La red completa, incluyendo la red troncal y las redes regionales, se llamó NSFNET. Se conectaba
+a ARPANET por medio de un enlace entre un IMP y una fuzzball en el cuarto de máquinas de Carnegie-
+Mellon. En la figura 1-28 se ilustra la primera red troncal de NSFNET, superpuesta en un mapa de
+Estados Unidos.
+Centro de supercomputadoras de la NSF
+Red de nivel medio de la NSF
+Ambas
+Figura 1-28. La red troncal de NSFNET en 1988.
+La NSFNET fue un éxito instantáneo y se sobrecargó desde el principio. La NSF empezó de inme-
+diato a planear su sucesora y otorgó un contrato al consorcio MERIT con base en Michigan para llevar
+a cabo la tarea. Se rentaron a MCI (que desde entonces se fusionó con WorldCom) unos canales de fibra
+óptica a 448 kbps para proveer la versión 2 de la red troncal. Se utilizaron equipos PC-RT de IBM como
+enrutadores. Esta red también se sobrecargó casi de inmediato y, para 1990, la segunda red troncal se
+actualizó a 1.5 Mbps.
+Mientras la red seguía creciendo, la NSF se dio cuenta de que el gobierno no podría seguir finan-
+ciando el uso de las redes por siempre. Además, las organizaciones comerciales querían unirse pero los
+estatutos de la NSF les prohibían usar las redes pagadas por la Fundación. En consecuencia, la NSF ani-
+mó a MERIT, MCI e IBM para que formaran una corporación sin fines de lucro llamada ANS (Redes y
+Servicios Avanzados, del inglés Advanced Networks and Services), como primer paso en el camino hacia
+la comercialización. En 1990, ANS se hizo cargo de la NSFNET y actualizó los enlaces de 1.5 Mbps a
+45 Mbps para formar la ANSNET. Esta red operó durante cinco años y después se vendió a America On-
+line. Pero para entonces, varias empresas estaban ofreciendo el servicio IP comercial y era evidente que
+el gobierno debía ahora salirse del negocio de las redes.
+Para facilitar la transición y asegurarse de que cada red regional se pudiera comunicar con las demás
+redes regionales, la NSF otorgó contratos a cuatro distintos operadores de red para establecer un NAP
+(Punto de Acceso a la Red, del inglés Network Access Point). Estos operadores fueron PacBell (San
+Francisco), Ameritech (Chicago), MFS (Washington, D.C.) y Sprint (Nueva York, en donde para fines de
+NAP, Pennsauken, Nueva Jersey cuenta como la ciudad de Nueva York). Todos los operadores de redes
+que quisieran ofrecer el servicio de red troncal a las redes regionales de la NSF se tenían que conectar a
+todos los NAP.
+Este arreglo significaba que un paquete que se originara en cualquier red regional podía elegir entre
+varias portadoras de red troncal para ir desde su NAP hasta el NAP de destino. En consecuencia, las
+  
+
+52 INTRODUCCIÓN CAP. 1
+portadoras de red troncal se vieron forzadas a competir por el negocio de las redes regionales con base en
+el servicio y al precio, que desde luego era lo que se pretendía. Como resultado, el concepto de una sola
+red troncal predeterminada se reemplazó por una infraestructura competitiva impulsada por el comercio.
+A muchas personas les gusta criticar al gobierno federal por no ser innovador, pero en el área de las redes
+fueron el DoD y la NSF quienes crearon la infraestructura que formó la base para Internet y después la
+entregaron a la industria para que la pusiera en funcionamiento.
+Durante la década de 1990, muchos otros países y regiones también construyeron redes de investi-
+gación nacional, que con frecuencia seguían el patrón de ARPANET y de la NSFNET. Entre éstas tene-
+mos a EuropaNET y EBONE en Europa, que empezaron con líneas de 2 Mbps y después actualizaron a
+líneas de 34 Mbps. En un momento dado, la infraestructura de red en Europa también se puso en manos
+de la industria.
+Internet ha cambiado mucho desde sus primeros días. Su tamaño se expandió de manera considerable
+con el surgimiento de la World Wide Web (WWW) a principios de la década de 1990. Datos recientes
+de Internet Systems Consortium indican que el número de hosts visibles en Internet está cerca de los
+600 millones. Ésta es una estimación baja, pero excede por mucho los varios millones de hosts que había
+cuando se sostuvo la primera conferencia sobre la WWW en el CERN en 1994.
+También ha cambiado mucho la forma en que usamos Internet. Al principio dominaban las aplicacio-
+nes como el correo electrónico para los académicos, los grupos de noticias, inicios remotos de sesión y
+transferencias de archivos. Después cambió a correo para todos, luego la web y la distribución de conte-
+nido de igual a igual, como el servicio Napster que está cerrado en la actualidad. Ahora están empezando
+a tomar popularidad la distribución de medios en tiempo real, las redes sociales (como Facebook) y los
+microblogs (como Twitter). Estos cambios trajeron a Internet tipos de medios más complejos, y por ende,
+mucho más tráfico. De hecho, el tráfico dominante en Internet parece cambiar con cierta regularidad
+puesto que, por ejemplo, las nuevas y mejores formas de trabajar con la música o las películas se pueden
+volver muy populares con gran rapidez.
+Arquitectura de Internet
+La arquitectura de Internet también cambió mucho debido a que creció en forma explosiva. En esta sec-
+ción trataremos de analizar de manera breve las generalidades sobre cómo se ve Internet en la actualidad.
+La imagen se complica debido a las continuas fusiones en los negocios de las compañías telefónicas (tel-
+cos), las compañías de cable y los ISP, y por lo que es difícil distinguir quién hace cada cosa. Uno de los
+impulsores de esta confusión es la convergencia de las telecomunicaciones, en donde una red se utiliza
+para distintos servicios que antes realizaban distintas compañías. Por ejemplo, en un “triple play”, una
+compañía le puede vender telefonía, TV y servicio de Internet a través de la misma conexión de red, con
+el supuesto de que usted ahorrará dinero. En consecuencia, la descripción aquí proporcionada será algo
+más simple que la realidad. Y lo que es verdad hoy tal vez no lo sea mañana.
+En la figura 1-29 se muestra el panorama completo. Examinaremos esta figura pieza por pieza, empe-
+zando con una computadora en el hogar (en los extremos de la figura). Para unirse a Internet, la compu-
+tadora se conecta a un Proveedor de servicios de Internet, o simplemente ISP, a quien el usuario compra
+acceso o conectividad a Internet. Esto permite a la computadora intercambiar paquetes con todos los
+demás hosts accesibles en Internet. El usuario podría enviar paquetes para navegar por la web o para
+cualquiera de los otros miles de usos, en realidad no importa. Hay muchos tipos de acceso a Internet y por
+lo general se distinguen con base en el ancho de banda que se ofrece además de su costo, pero el atributo
+más importante es la conectividad.
+Una manera común de conectar un ISP es mediante la línea telefónica, en cuyo caso su compañía
+telefónica será su ISP. La tecnología DSL (Línea de Suscriptor Digital, del inglés Digital Subscriber
+Line) reutiliza la línea telefónica que se conecta a su casa para obtener una transmisión de datos digital. La
+  
+
+SEC. 1.5 REDES DE EJEMPLO
+53
+Centro de
+datos
+ISP de nivel 1
+Red troncal
+Enrutador
+Intercambio de
+tráfico en IXP
+Teléfono
+móvil 3G
+Fibra
+(FTTH)
+Marcación
+DSL
+Cable
+Otros
+ISP
+DSLAM
+POP
+Módem de
+cable
+Ruta de
+datos
+CMTS
+Módem DSL
+Figura 1-29. Generalidades sobre la arquitectura de Internet.
+computadora se conecta a un dispositivo conocido como módem DSL, el cual realiza la conversión entre
+los paquetes digitales y las señales analógicas que pueden pasar libremente a través de la línea telefónica.
+En el otro extremo hay un dispositivo llamado DSLAM (Multiplexor de Acceso a la Línea de Suscrip-
+tor Digital, del inglés Digital Subscriber Line Access Multiplexer) que realiza la conversión entre señales
+y paquetes.
+Hay otras formas populares de conectarse a un ISP, las cuales se muestran en la figura 1-29. DSL es
+una opción de utilizar la línea telefónica local con más ancho de banda que la acción de enviar bits a través
+de una llamada telefónica tradicional en vez de una conversación de voz. A esto último se le conoce como
+marcación y se lleva a cabo con un tipo distinto de módem en ambos extremos. La palabra módem es
+la abreviación de “modulador demodulador” y se refiere a cualquier dispositivo que realiza conversiones
+entre bits digitales y señales analógicas.
+Otro método es enviar señales a través del sistema de TV por cable. Al igual que DSL, ésta es una
+forma de reutilizar la infraestructura existente, que en este caso es a través de los canales de TV por cable
+que no se utilizan. El dispositivo en el extremo conectado a la casa se llama módem de cable y el dis-
+positivo en la cabecera del cable se llama CMTS (Sistema de Terminación del Módem de Cable, del
+inglés Cable Modem Termination System).
+Las tecnologías DSL y de TV por cable proveen acceso a Internet con velocidades que varían desde
+una pequeña fracción de un megabit/segundo hasta varios megabits/segundo, dependiendo del sistema.
+Estas velocidades son mucho mayores que en las líneas de marcación, las cuales se limitan a 56 kbps
+debido al estrecho ancho de banda que se utiliza para las llamadas de voz. Al acceso a Internet con una
+velocidad mucho mayor que la de marcación se le llama banda ancha. El nombre hace referencia al
+ancho de banda más amplio que se utiliza para redes más veloces, en vez de hacer referencia a una velocidad
+específica.
+Los métodos de acceso mencionados hasta ahora se limitan con base en el ancho de banda de la “última
+milla” o último tramo de transmisión. Al usar cable de fibra óptica en las residencias, se puede proveer un
+acceso más rápido a Internet con velocidades en el orden de 10 a 100 Mbps. A este diseño se le conoce
+como FTTH (Fibra para el Hogar, del inglés Fiber To The Home). Para los negocios en áreas comercia-
+les tal vez tenga sentido rentar una línea de transmisión de alta velocidad de las oficinas hasta el ISP más
+cercano. Por ejemplo, en Estados Unidos una línea T3 opera aproximadamente a 45 Mbps.
+  
+
+54 INTRODUCCIÓN CAP. 1
+La tecnología inalámbrica también se utiliza para acceder a Internet. Un ejemplo que veremos en
+breve es el de las redes de teléfonos móviles 3G. Estas redes pueden proveer una transmisión de datos a
+velocidades de 1 Mbps o mayores para los teléfonos móviles y los suscriptores fijos que se encuentren en
+el área de cobertura.
+Ahora podemos mover los paquetes entre el hogar y el ISP. A la ubicación en la que los paquetes
+entran a la red del ISP para que se les dé servicio le llamamos el POP (Punto De Presencia, del in-
+glés Point Of Presence) del ISP. A continuación explicaremos cómo se mueven los paquetes entre los
+POP de distintos ISP. De aquí en adelante, el sistema es totalmente digital y utiliza la conmutación
+de paquetes.
+Las redes de ISP pueden ser de alcance regional, nacional o internacional. Ya hemos visto que su ar-
+quitectura está compuesta de líneas de transmisión de larga distancia que interconectan enrutadores en los
+POP de las distintas ciudades a las que los ISP dan servicio. A este equipo se le denomina la red troncal
+(backbone) del ISP. Si un paquete está destinado a un host al que el ISP da servicio directo, ese paquete se
+encamina a través de la red troncal y se entrega al host. En caso contrario, se debe entregar a otro ISP.
+Los ISP conectan sus redes para intercambiar tráfico en lo que llamamos un IXP (Punto de Inter-
+cambio en Internet, del inglés Internet eXchange Points). Se dice que los ISP conectados intercambian
+tráfico entre sí. Hay muchos IXP en ciudades de todo el mundo. Se dibujan en sentido vertical en la
+figura 1-29 debido a que las redes de ISP se traslapan geográficamente. En esencia, un IXP es un cuarto
+lleno de enrutadores, por lo menos uno por ISP. Una LAN en el cuarto conecta a todos los enrutadores, de
+modo que los paquetes se pueden reenviar desde cualquier red troncal de ISP a cualquier otra red troncal
+de ISP. Los IXP pueden ser instalaciones extensas pertenecientes a entidades independientes. Uno de los
+más grandes es Amsterdam Internet Exchange, en donde se conectan cientos de ISP y a través del cual
+intercambian cientos de gigabits/segundo de tráfico.
+El intercambio de tráfico (peering) que ocurre en los IXP depende de las relaciones comerciales entre
+los ISP. Hay muchas relaciones posibles. Por ejemplo, un ISP pequeño podría pagar a un ISP más grande
+para obtener conectividad a Internet para alcanzar hosts distantes, así como cuando un cliente compra
+servicio a un proveedor de Internet. En este caso, se dice que el ISP pequeño paga por el tránsito. O tal
+vez dos ISP grandes decidan intercambiar tráfico de manera que cada ISP pueda entregar cierto tráfico
+al otro ISP sin tener que pagar por el tránsito. Una de las diversas paradojas de Internet es que los ISP
+que compiten públicamente por los clientes, cooperan con frecuencia en forma privada para intercambiar
+tráfico (Metz, 2001).
+La ruta que toma un paquete por Internet depende de las opciones de intercambio de tráfico de los ISP.
+Si el ISP que va a entregar un paquete intercambia tráfico con el ISP de destino, podría entregar el paquete
+directamente a su igual. En caso contrario, podría encaminar el paquete hasta el lugar más cercano en
+donde se conecte con un proveedor de tránsito pagado, de manera que éste pueda entregar el paquete. En
+la figura 1-29 se dibujan dos rutas de ejemplo a través de los ISP. Es muy común que la ruta que toma un
+paquete no sea la ruta más corta a través de Internet.
+En la parte superior de la “cadena alimenticia” se encuentra un pequeño grupo de empresas, como
+AT&T y Sprint, que operan extensas redes troncales internacionales con miles de enrutadores conectados
+mediante enlaces de fibra óptica con un extenso ancho de banda. Estos ISP no pagan por el tránsito. Por
+lo general se les denomina ISP de nivel 1 y se dice que forman la red troncal de Internet, ya que todos los
+demás se tienen que conectar a ellos para poder llegar a toda la Internet.
+Las empresas que proveen mucho contenido, como Google y Yahoo!, tienen sus computadoras en
+centros de datos que están bien conectados al resto de Internet. Estos centros de datos están diseña-
+dos para computadoras, no para humanos, y pueden contener estante (rack) tras estante de máquinas, a lo
+que llamamos granja de servidores. Los centros de datos de colocación u hospedaje permiten a los
+clientes tener equipo como servidores en los POP de un ISP, de manera que se puedan realizar conexiones
+cortas y rápidas entre los servidores y las redes troncales del ISP. La industria de hospedaje en Internet se
+  
+
+SEC. 1.5 REDES DE EJEMPLO
+55
+está virtualizando cada vez más, de modo que ahora es común rentar una máquina virtual que se ejecuta en
+una granja de servidores en vez de instalar una computadora física. Estos centros de datos son tan grandes
+(decenas o cientos de miles de máquinas) que la electricidad es uno de los principales costos, por lo que
+algunas veces estos centros de datos se construyen en áreas en donde el costo de la electricidad sea más
+económico.
+Con esto terminamos nuestra breve introducción a Internet. En los siguientes capítulos tendremos
+mucho qué decir sobre los componentes individuales y su diseño, los algoritmos y los protocolos. Algo
+más que vale la pena mencionar aquí es que el significado de estar en Internet está cambiando. Antes se
+decía que una máquina estaba en Internet si: (1) ejecutaba la pila de protocolos TCP/IP; (2) tenía una di-
+rección IP; y (3) podía enviar paquetes IP a todas las demás máquinas en Internet. Sin embargo, a menudo
+los ISP reutilizan las direcciones dependiendo de las computadoras que se estén utilizando en un momento
+dado, y es común que las redes domésticas compartan una dirección IP entre varias computadoras. Esta
+práctica quebranta la segunda condición. Las medidas de seguridad, como los firewalls, también pueden
+bloquear en parte las computadoras para que no reciban paquetes, con lo cual se quebranta la tercera con-
+dición. A pesar de estas dificultades, tiene sentido decir que esas máquinas estarán en Internet mientras
+permanezcan conectadas a sus ISP.
+También vale la pena mencionar que algunas compañías han interconectado todas sus redes internas
+existentes, y con frecuencia usan la misma tecnología que Internet. Por lo general, se puede acceder a
+estas intranets sólo desde las premisas de la compañía o desde computadoras notebook de la empresa,
+pero en los demás aspectos funcionan de la misma manera que Internet.
+1.5.2 Redes de teléfonos móviles de tercera generación
+A las personas les encanta hablar por teléfono mucho más de lo que les gusta navegar en Internet, y esto
+ha logrado que la red de teléfonos móviles sea la más exitosa del mundo. Tiene más de cuatro mil millones
+de suscriptores a nivel mundial. Para poner esta cantidad en perspectiva, digamos que constituye aproxi-
+madamente 60% de la población mundial y es mucho más que la cantidad de hosts de Internet y líneas
+telefónicas fijas combinadas (ITU, 2009).
+La arquitectura de la red de teléfonos móviles ha cambiado y ha crecido de manera considerable
+durante los últimos 40 años. Los sistemas de telefonía móvil de primera generación transmitían las
+llamadas de voz como señales de variación continua (analógicas) en vez de secuencias de bits (digitales).
+El sistema AMPS (Sistema Telefónico Móvil Avanzado, del inglés Advanced Mobile Phone System), que
+se desarrolló en Estados Unidos en 1982, fue un sistema de primera generación muy popular. Los sistemas
+de teléfonos móviles de segunda generación cambiaron a la transmisión de las llamadas de voz en formato
+digital para aumentar su capacidad, mejorar la seguridad y ofrecer mensajería de texto. El sistema GSM
+(Sistema Global para Comunicaciones Móviles, del inglés Global System for Mobile communications),
+que se implementó a partir de 1991 y se convirtió en el sistema de telefonía móvil más utilizado en el
+mundo, es un sistema 2G.
+Los sistemas de tercera generación (o 3G) comenzaron a implementarse en el año 2001 y ofrecen
+servicios de datos tanto de voz digital como de datos digitales de banda ancha. También vienen con mucho
+lenguaje tecnológico y distintos estándares a elegir. La ITU (una organización internacional de estándares
+de la que hablaremos en la siguiente sección) define al estándar 3G en sentido general como un servicio
+que ofrece velocidades de por lo menos 2 Mbps para usuarios estacionarios o móviles, y de 384 kbps en
+un vehículo en movimiento. El sistema UMTS (Sistema Universal de Telecomunicaciones Móviles, del
+inglés Universal Mobile Telecommunications System), también conocido como WCDMA (Acceso Múl-
+tiple por División de Código de Banda Ancha, del inglés Wideband Code Division Multiple Access),
+es el principal sistema 3G que se está implementando con rapidez en todo el mundo. Puede proveer hasta
+  
+
+56 INTRODUCCIÓN CAP. 1
+14 Mbps en el enlace de bajada y casi 6 Mbps en el enlace de subida. Las futuras versiones utilizarán
+varias antenas y radios para proveer velocidades aún mayores para los usuarios.
+El recurso escaso en los sistemas 3G, al igual que en los sistemas 2G y 1G anteriores, es el espectro
+de radio. Los gobiernos conceden el derecho de usar partes del espectro a los operadores de la red de tele-
+fonía móvil, a menudo mediante una subasta de espectro en donde los operadores de red realizan ofertas.
+Es más fácil diseñar y operar sistemas cuando se tiene una parte del espectro con licencia, ya que a nadie
+más se le permite transmitir en ese espectro, pero la mayoría de las veces es algo muy costoso. Por ejem-
+plo, en el Reino Unido en el año 2000, se subastaron cinco licencias para 3G por un total aproximado de
+$40 mil millones de dólares.
+Esta escasez del espectro es la que condujo al diseño de la red celular que se muestra en la
+figura 1-30 y que ahora se utiliza en las redes de telefonía móvil. Para manejar la interferencia de ra-
+dio entre los usuarios, el área de cobertura se divide en celdas. Dentro de una celda, a los usuarios se les
+asignan canales que no interfieren entre sí y que no provocan mucha interferencia para las celdas adya-
+centes. Esto permite una reutilización eficiente del espectro, o reutilización de frecuencia, en las celdas
+adyacentes, lo cual incrementa la capacidad de la red. En los sistemas 1G, que transmitían cada llamada
+de voz en una banda de frecuencia específica, las frecuencias se elegían con cuidado de modo que no
+tuvieran conflictos con las celdas adyacentes. De esta forma, una frecuencia dada sólo se podría reutilizar
+una vez en varias celdas. Los sistemas 3G modernos permiten que cada celda utilice todas las frecuencias,
+pero de una manera que resulte en un nivel tolerable de interferencia para las celdas adyacentes. Existen
+variaciones en el diseño celular, incluyendo el uso de antenas direccionales o sectorizadas en torres de
+celdas para reducir aún más la interferencia, pero la idea básica es la misma.
+Celdas
+Estación base
+Figura 1-30. Diseño celular de las redes de telefonía móvil.
+La arquitectura de la red de telefonía móvil es muy distinta a la de Internet. Tiene varias partes, como
+se muestra en la versión simplificada de la arquitectura UMTS en la figura 1-31. Primero tenemos a la
+interfaz aérea. Éste es un término elegante para el protocolo de radiocomunicación que se utiliza a través
+del aire entre el dispositivo móvil (como el teléfono celular) y la estación base celular. Los avances en
+la interfaz aérea durante las últimas décadas han aumentado en forma considerable las velocidades de
+datos inalámbricas. La interfaz aérea de UTMS se basa en el Acceso Múltiple por División de Código
+(CDMA, del inglés Code Division Multiple Access), una técnica que estudiaremos en el capítulo 2.
+La estación base celular forma junto con su controlador la red de acceso por radio. Esta parte cons-
+tituye el lado inalámbrico de la red de telefonía móvil. El nodo controlador o RNC (Controlador de la
+  
+
+SEC. 1.5 REDES DE EJEMPLO
+57
+Interfaz
+aérea (“Uu”) Nodo B
+Acceso
+/ núcleo de
+interfaz (“lu”)
+RNC
+Circuitos
+(“lu-CS”)
+MSC /
+MGW
+GMSC
+/ MGW
+PSTN
+RNC
+HSS
+Paquetes
+(“lu-PS”)
+SGSN GGSN
+Internet
+Red de acceso por radio Figura 1-31. Paquetes
+Núcleo de red
+Arquitectura de la red de telefonía móvil 3G UTMS.
+Red de Radio, del inglés Radio Network Controller) controla la forma en que se utiliza el espectro. La
+estación base implementa a la interfaz aérea. A ésta se le conoce como Nodo B, una etiqueta temporal que
+se quedó para siempre.
+El resto de la red de telefonía móvil transporta el tráfico para la red de acceso por radio. A esto se le
+conoce como núcleo de red. La red básica UMTS evolucionó a partir de la red básica que se utilizaba para
+el sistema GSM 2G anterior. Sin embargo, algo sorprendente está ocurriendo en la red básica UMTS.
+Desde los inicios de las redes se ha venido desatando una guerra entre las personas que apoyan las
+redes de paquetes (es decir, subredes sin conexión) y las personas que apoyan las redes de circuitos (es
+decir, redes orientadas a conexión). Los principales defensores de los paquetes provienen de la comu-
+nidad de Internet. En un diseño sin conexión, cada paquete se encamina de manera independiente a los
+demás paquetes. Como consecuencia, si algunos enrutadores fallan durante una sesión, no habrá daño
+alguno siempre y cuando el sistema pueda reconfigurarse a sí mismo en forma dinámica, de modo que
+los siguientes paquetes puedan encontrar una ruta a su destino, aun cuando sea distinta a la que hayan
+utilizado los paquetes anteriores.
+El campo de circuitos proviene del mundo de las compañías telefónicas. En el sistema telefónico,
+un usuario debe marcar el número de la parte a la que va a llamar y esperar una conexión antes de poder
+hablar o enviar datos. Esta forma de realizar la conexión establece una ruta a través del sistema telefónico
+que se mantiene hasta terminar la llamada. Todas las palabras o paquetes siguen la misma ruta. Si falla una
+línea o un interruptor en la ruta se aborta la llamada, es decir, es un método menos tolerante a las fallas en
+comparación con el diseño sin conexión.
+La ventaja de los circuitos es que soportan la calidad del servicio con más facilidad. Al establecer una
+conexión por adelantado, la subred puede reservar recursos como el ancho de banda del enlace, el espacio
+de búfer de los switches, y tiempo de la CPU. Si alguien intenta hacer una llamada y no hay suficientes
+recursos disponibles, la llamada se rechaza y el usuario recibe una señal de ocupado. De esta forma, una
+vez establecida la conexión, recibirá un buen servicio.
+Con una red sin conexión, si llegan demasiados paquetes al mismo enrutador en el mismo momento,
+es probable que pierda algunos. El emisor se dará cuenta de esto en un momento dado y volverá a enviar-
+los, pero la calidad del servicio será intermitente e inadecuada para transmitir audio o video, a menos que
+  
+
+58 INTRODUCCIÓN CAP. 1
+la red tenga una carga ligera. Sin necesidad de decirlo, proveer una calidad adecuada de audio y video es
+algo por lo que las compañías telefónicas se preocupan mucho, de aquí que prefieran un servicio orientado
+a la conexión.
+La sorpresa en la figura 1-31 es que hay equipo tanto de paquetes como de conmutación de circui-
+tos en el núcleo de red. Esto muestra a la red de telefonía móvil en transición, en donde las compañías
+de telefonía móvil pueden implementar una o, en ocasiones, ambas alternativas. Las redes de telefonía
+móvil antiguas usaban un núcleo de conmutación de paquetes al estilo de la red telefónica tradicional
+para transmitir las llamadas de voz. Esta herencia se puede ver en la red UMTS con los elementos MSC
+(Centro de Conmutación Móvil, del inglés Mobile Switching Center), GMSC (Centro de Conmu-
+tación Móvil de Puerta de Enlace, del inglés Gateway Mobile Switching Center) y MGW (Puerta
+de Enlace de Medios, del inglés Media Gateway) que establecen conexiones a través de un núcleo de
+red con conmutación de paquetes como PSTN (Red Telefónica Pública Conmutada, del inglés Public
+Switched Telephone Network).
+Los servicios de datos se han convertido en una parte de la red de telefonía móvil mucho más im-
+portante de lo que solían ser, empezando con la mensajería de texto y los primeros servicios de datos de
+paquetes, como GPRS (Servicio General de Paquetes de Radio, del inglés General Packet Radio Ser-
+vice) en el sistema GSM. Estos servicios de datos antiguos operaban a decenas de kbps, pero los usuarios
+querían más. En comparación, una llamada de voz se transmite a una velocidad de 64 kbps, comúnmente
+de 3 a 4 veces menos con compresión.
+Para transmitir todos estos datos, los nodos del núcleo de red UMTS se conectan directamente a
+una red de conmutación de paquetes. El SGSN (Nodo de Soporte del Servicio GPRS, del inglés Ser-
+ving GPRS Support Node) y el GGSN (Nodo de Soporte de la Puerta de Enlace de GPRS, del inglés
+Gateway GPRS Support Node) transmiten paquetes de datos hacia y desde dispositivos móviles y hacen
+interfaz con redes de paquetes externas, como Internet.
+Esta transición está destinada a continuar en las redes de telefonía móvil que se planean e implemen-
+tan en la actualidad. Incluso se utilizan protocolos de Internet en dispositivos móviles para establecer
+conexiones para llamadas de voz a través de una red de paquetes de datos, en forma de voz sobre IP. El
+protocolo IP y los paquetes se utilizan en todo el camino, desde el acceso por radio hasta el núcleo de red.
+Desde luego que también se están haciendo cambios en el diseño de las redes IP para soportar una mejor
+calidad de servicio. Si no fuera así, los problemas con la señal entrecortada de audio y video no impresio-
+narían a los clientes y dejarían de pagar. En el capítulo 5 retomaremos este tema.
+Otra diferencia entre las redes de telefonía móvil y la Internet tradicional es la movilidad. Cuando un
+usuario se sale del rango de una estación base celular y entra al rango de otra, el flujo de datos se debe
+encaminar nuevamente desde la estación antigua hasta la nueva estación base celular. A esta técnica se le
+conoce como traspaso (handover) o entrega (handoff ) y se ilustra en la figura 1-32.
+El dispositivo móvil o la estación base pueden solicitar un traspaso si disminuye la calidad de la señal.
+En algunas redes celulares (por lo general las que están basadas en tecnología CDMA) es posible conec-
+(a) (b)
+Figura 1-32. Traspaso de telefonía móvil (a) antes, (b) después.
+  
+
+SEC. 1.5 REDES DE EJEMPLO
+59
+tarse a la nueva estación base antes de desconectarse de la estación anterior. Esto mejora la calidad de la
+conexión para el dispositivo móvil, ya que no se interrumpe el servicio; el dispositivo móvil se conecta
+a dos estaciones base por un breve instante. A esta manera de realizar un traspaso se le llama traspaso
+suave para diferenciarla de un traspaso duro, en donde el dispositivo móvil se desconecta de la estación
+base anterior antes de conectarse a la nueva estación.
+Una cuestión relacionada es cómo buscar un móvil en primer lugar cuando hay una llamada entrante.
+Cada red de telefonía móvil tiene un HSS (Servidor de Suscriptores Locales, del inglés Home Subscriber
+Server) en el núcleo de red, el cual conoce la ubicación de cada suscriptor así como demás información de
+perfil que se utiliza para la autenticación y la autorización. De esta forma, para encontrar un dispositivo
+móvil hay que ponerse en contacto con el HSS.
+El último tema en cuestión es la seguridad. A través de la historia, las compañías telefónicas han
+tomado la seguridad mucho más en serio que las compañías de Internet por mucho tiempo, debido a la ne-
+cesidad de cobrar por el servicio y evitar el fraude (en los pagos). Por desgracia, esto no dice mucho. Sin
+embargo, en la evolución de la tecnología 1G a la 3G, las compañías de telefonía móvil han sido capaces
+de desarrollar varios mecanismos básicos de seguridad para dispositivos móviles.
+A partir del sistema GSM 2G, el teléfono móvil se dividió en una terminal y un chip removible que
+contenía la identidad del suscriptor y la información de su cuenta. Al chip se le conoce de manera informal
+como tarjeta SIM (Módulo de Identidad del Suscriptor, del inglés Subscriber Identity Module). Las
+tarjetas SIM se pueden usar en distintas terminales para activarlas, además de que proveen una seguridad
+básica. Cuando los clientes de GSM viajan a otros países por motivos de negocios o de placer, a menudo
+traen consigo sus terminales pero compran una nueva tarjeta SIM por unos cuantos dólares al llegar, para
+poder hacer llamadas locales sin cargos de roaming.
+Para reducir los fraudes, la red de telefonía móvil también usa la información en las tarjetas SIM para
+autenticar a los suscriptores y verificar que puedan usar la red. Con el sistema UTMS, el dispositivo móvil
+también usa la información en la tarjeta SIM para verificar que está hablando con una red legítima.
+La privacidad es otro aspecto de la seguridad. Las señales inalámbricas se difunden a todos los re-
+ceptores cercanos, por lo que para evitar que alguien pueda espiar las conversaciones se utilizan claves
+criptográficas en la tarjeta SIM para cifrar las transmisiones. Esta metodología ofrece una mayor priva-
+cidad que en los sistemas 1G, que se podían intervenir fácilmente, pero no es una panacea debido a las
+debilidades en los esquemas de cifrado.
+Las redes de telefonía móvil están destinadas a desempeñar un papel central en las futuras redes.
+Ahora tratan más sobre aplicaciones móviles de banda ancha que sobre llamadas de voz, y esto tiene
+implicaciones importantes para las interfaces aéreas, la arquitectura del núcleo de red y la seguridad
+de las futuras redes. Las tecnologías 4G que son más veloces y mejores ya están en fase de diseño bajo
+el nombre de LTE (Evolución a Largo Plazo, del inglés Long Term Evolution), incluso a medida que
+continúa el diseño y el desarrollo de la tecnología 3G. Hay otras tecnologías inalámbricas que también
+ofrecen acceso a Internet de banda ancha para clientes fijos y móviles, en particular las redes 802.16 bajo
+el nombre común de WiMAX. Es totalmente posible que LTE y WiMAX vayan a chocar en un futuro
+y es difícil predecir qué les ocurrirá.
+1.5.3 Redes LAN inalámbricas: 802.11
+Casi al mismo tiempo en que aparecieron las computadoras laptop, muchas personas soñaban con en-
+trar a una oficina y que su laptop se conectara mágicamente a Internet. En consecuencia, varios grupos
+empezaron a trabajar en formas para lograr este objetivo. La metodología más práctica consiste en equipar
+tanto a la oficina como las computadoras laptop con transmisores de radio de corto alcance y receptores
+para que se puedan comunicar.
+  
+
+60 INTRODUCCIÓN CAP. 1
+El trabajo en este campo condujo rápidamente a que varias empresas empezaran con la comercia-
+lización de las redes LAN inalámbricas. El problema era que ni siquiera había dos de ellas que fueran
+compatibles. La proliferación de estándares implicaba que una computadora equipada con un radio marca
+X no trabajaría en un cuarto equipado con una estación base marca Y. A mediados de la década de 1990,
+la industria decidió que sería muy conveniente tener un estándar para las redes LAN inalámbricas, de
+modo que el comité IEEE que había estandarizado las redes LAN alámbricas recibió la tarea de idear un
+estándar para redes LAN inalámbricas.
+La primera decisión fue la más sencilla: cómo llamar a este estándar. Todos los demás estándares
+de LAN tenían números como 802.1, 802.2 y 802.3 hasta 802.10, así que al estándar de LAN ina-
+lámbrica se le dio el número 802.11. En la jerga computacional a este estándar se le conoce con el
+nombre de WiFi, pero es un estándar importante y merece respeto, de modo que lo llamaremos por
+su nombre: 802.11.
+El resto fue más difícil. El primer problema era hallar una banda de frecuencia adecuada que estu-
+viera disponible, de preferencia a nivel mundial. La metodología utilizada fue contraria a la que se utilizó
+en las redes de telefonía móvil. En vez de un espectro costoso bajo licencia, los sistemas 802.11 operan en
+bandas sin licencia como las bandas ISM (Industriales, Científicas y Médicas, del inglés Industrial,
+Scientific, and Medical) definidas por el ITU-R (por ejemplo, 902-929 MHz, 2.4-2.5 GHz, 5.725-5.825
+GHz). Todos los dispositivos pueden usar este espectro siempre y cuando limiten su potencia de transmi-
+sión para dejar que coexistan distintos dispositivos. Desde luego que esto significa que los radios 802.11
+podrían entrar en competencia con los teléfonos inalámbricos, los abridores de puertas de garaje y los
+hornos de microondas.
+Las redes 802.11 están compuestas de clientes (como laptops y teléfonos móviles) y de una
+infraestructura llamada AP (Puntos de Acceso) que se instala en los edificios. Algunas veces a los
+puntos de acceso se les llama estaciones base. Los puntos de acceso se conectan a la red alámbrica
+y toda la comunicación entre los clientes se lleva a cabo a través de un punto de acceso. También es
+posible que los clientes que están dentro del rango del radio se comuniquen en forma directa, como
+en el caso de dos computadoras en una oficina sin un punto de acceso. A este arreglo se le conoce
+como red ad hoc. Se utiliza con menor frecuencia que el modo de punto de acceso. En la figura 1-33
+se muestran ambos modos.
+Punto de
+acceso
+A la red alámbrica
+Figura 1-33. (a) (b)
+(a) Red inalámbrica con un punto de acceso. (b) Red ad hoc.
+La transmisión 802.11 se complica debido a las condiciones inalámbricas que varían incluso con
+pequeños cambios en el entorno. En las frecuencias usadas para 802.11 las señales de radio pueden
+  
+
+SEC. 1.5 REDES DE EJEMPLO
+61
+rebotar de objetos sólidos, de modo que varios ecos de una transmisión podrían llegar a un receptor a
+través de distintas rutas. Los ecos se pueden cancelar o reforzar unos a otros y provocar que la señal
+recibida fluctúe de manera considerable. Este fenómeno se llama desvanecimiento multitrayectoria
+y se muestra en la figura 1-34.
+Múltiples trayectorias
+Señal sin desvanecimiento
+Transmisor
+inalámbrico
+Reflector
+Señal desvanecida
+Receptor
+inalámbrico
+Figura 1-34. Desvanecimiento multitrayectorias.
+La idea clave para solventar las condiciones inalámbricas variables es la diversidad de rutas, o el
+envío de información a través de múltiples rutas independientes. De esta forma, es probable que la infor-
+mación se reciba incluso si una de las rutas resulta ser pobre debido a un desvanecimiento. Por lo general
+estas rutas independientes están integradas al esquema de modulación digital en la capa física. Las opcio-
+nes incluyen el uso de distintas frecuencias a lo largo de la banda permitida, en donde se siguen distintas
+rutas espaciales entre los distintos pares de antenas o se repiten bits durante distintos periodos.
+Las distintas versiones de 802.11 han usado todas estas técnicas. El estándar inicial (1997) definió
+una LAN inalámbrica que podía operar a 1 Mbps o 2 Mbps mediante saltos entre frecuencias o también
+se podía extender la señal a lo largo del espectro permitido. Casi de inmediato surgieron las quejas de las
+personas diciendo que era muy lenta, por lo que se empezó a trabajar en estándares más veloces. El diseño
+de espectro extendido se amplió y convirtió en el estándar 802.11b (1999) que operaba a velocidades de
+hasta 11 Mbps. Los estándares 802.11a (1999) y 802.11g (2003) cambiaron a un esquema de modulación
+distinto llamado OFDM (Multiplexado por División de Frecuencias Ortogonales, del inglés Orthogonal
+Frequency Division Multiplexing). Este esquema divide una banda amplia de espectro en muchas
+fracciones estrechas, a través de las cuales se envían distintos bits en paralelo. Este esquema mejorado,
+que estudiaremos en el capítulo 2, logró aumentar las velocidades en bits de los estándares 802.11a/g hasta
+54 Mbps. Es un aumento considerable, pero las personas querían una velocidad aún mayor para soportar
+usos más demandantes. La versión más reciente es 802.11n (2009), la cual utiliza bandas de frecuencia
+más amplias y hasta cuatro antenas por computadora para alcanzar velocidades de hasta 450 Mbps.
+Como la tecnología inalámbrica es un medio de difusión por naturaleza, los radios 802.11 también
+tienen que lidiar con el problema de que las múltiples transmisiones que se envían al mismo tiempo ten-
+drán colisiones, lo cual puede interferir con la recepción. Para encargarse de este problema, 802.11 utiliza
+un esquema CSMA (Acceso Múltiple por Detección de Portadora, del inglés Carrier Sense Multiple
+Access) basado en ideas provenientes de la Ethernet alámbrica que, irónicamente, se basó en una de las
+primeras redes inalámbricas desarrolladas en Hawai, llamada ALOHA. Las computadoras esperan du-
+rante un intervalo corto y aleatorio antes de transmitir, y difieren sus transmisiones si escuchan que hay
+alguien más transmitiendo. Este esquema reduce la probabilidad de que dos computadoras envíen datos
+al mismo tiempo, pero no funciona tan bien como en el caso de las computadoras conectadas por cables.
+  
+
+62 INTRODUCCIÓN CAP. 1
+Para ver por qué, examine la figura 1-35. Suponga que la computadora A está transmitiendo datos a la
+computadora B, pero el rango de radio del transmisor de A es demasiado corto como para llegar a la com-
+putadora C. Si C desea transmitir a B puede escuchar antes de empezar, pero el hecho de que no escuche
+nada no significa que su transmisión vaya a tener éxito. La incapacidad de C de escuchar a A antes de
+empezar provoca algunas colisiones. Después de una colisión, el emisor espera durante un retardo aleato-
+rio más largo y vuelve a transmitir el paquete. A pesar de ésta y de otras cuestiones, el esquema funciona
+bastante bien en la práctica.
+Rango
+del radio
+de A
+Rango
+del radio
+de C
+A C B
+Figura 1-35. El rango de un solo radio tal vez no cubra todo el sistema.
+Otro problema es la movilidad. Si un cliente móvil se aleja del punto de acceso que utiliza y entra en
+el rango de un punto de acceso distinto, se requiere alguna forma de entrega. La solución es que una red
+802.11 puede consistir de múltiples celdas, cada una con su propio punto de acceso, y de un sistema de
+distribución que las conecte. Con frecuencia el sistema de distribución es Ethernet conmutada, pero puede
+usar cualquier tecnología. A medida que los clientes se desplazan, tal vez encuentren otro punto de acceso
+con una mejor señal que la que tienen en ese momento y pueden cambiar su asociación. Desde el exterior,
+el sistema completo se ve como una sola LAN alámbrica.
+Aclarado el punto, la movilidad en el estándar 802.11 ha sido de un valor limitado si se le compara
+con la movilidad disponible en la red de telefonía móvil. Por lo general, el 802.11 lo utilizan los clientes
+nómadas que van de una ubicación fija a otra, en vez de usarlo en el camino. Estos clientes en realidad
+no necesitan movilidad. Incluso cuando se utiliza la movilidad que ofrece el estándar 802.11, se extien-
+de sobre una sola red 802.11, que podría cubrir cuando mucho un edificio extenso. Los esquemas en lo
+futuro tendrán que proveer movilidad a través de distintas redes y diferentes tecnologías (por ejemplo,
+802.21).
+Por último tenemos el problema de la seguridad. Como las transmisiones inalámbricas son difundi-
+das, es fácil que las computadoras cercanas reciban paquetes de información que no estaban destinados
+para ellas. Para evitar esto, el estándar 802.11 incluyó un esquema de cifrado conocido como WEP (Pri-
+vacidad Equivalente a Cableado, del inglés Wired Equivalent Privacy). La idea era lograr que la seguridad
+inalámbrica fuera igual a la seguridad alámbrica. Es una buena idea, pero por desgracia el esquema era
+imperfecto y no pasó mucho tiempo para que fallara (Borisov y colaboradores, 2001). Desde entonces se
+reemplazó con esquemas más recientes que tienen distintos detalles criptográficos en el estándar 802.11i,
+conocido también como Acceso protegido WiFi, que en un principio se llamó WPA pero ahora se reem-
+plazó por el WPA2.
+El estándar 802.11 provocó una revolución en las redes inalámbricas que está destinada a continuar.
+Aparte de los edificios, se ha empezado a instalar en trenes, aviones, botes y automóviles de modo que las
+  
+
+SEC. 1.5 REDES DE EJEMPLO
+63
+personas puedan navegar por Internet en cualquier parte a donde vayan. Los teléfonos móviles y todo tipo
+de electrodomésticos, desde las consolas de juego hasta las cámaras digitales, se pueden comunicar con
+este estándar. En el capítulo 4 hablaremos detalladamente sobre este estándar.
+1.5.3 Redes RFID y de sensores
+Las redes que hemos estudiado hasta ahora están compuestas de dispositivos de cómputo fáciles de reco-
+nocer, desde computadoras hasta teléfonos móviles. Gracias a la Identificación por Radio Frecuencia
+(RFID), los objetos cotidianos también pueden formar parte de una red de computadoras.
+Una etiqueta RFID tiene la apariencia de una calcomanía del tamaño de una estampilla postal que
+se puede pegar (o incrustar) en un objeto, de modo que se pueda rastrear. El objeto podría ser una vaca,
+un pasaporte o un libro. La etiqueta consiste en un pequeño microchip con un identificador único y una
+antena que recibe transmisiones por radio. Los lectores RFID instalados en puntos de rastreo encuentran
+las etiquetas cuando están dentro del rango y las interrogan para obtener su información como se muestra
+en la figura 1-36. Las aplicaciones incluyen: verificar identidades, administrar la cadena de suministro,
+carreras de sincronización y reemplazar códigos de barras.
+Etiqueta
+RFID
+Figura 1-36. Lector
+RFID
+La tecnología RFID se utiliza para conectar objetos cotidianos en red.
+Hay muchos tipos de RFID, cada uno con distintas propiedades, pero tal vez el aspecto más fascinan-
+te de la tecnología RFID sea que la mayoría de las etiquetas RFID no tienen enchufe eléctrico ni batería,
+sino que toda la energía necesaria para operarlos se suministra en forma de ondas de radio a través de
+los lectores RFID. A esta tecnología se le denomina RFID pasiva para diferenciarla de la RFID activa
+(menos común), en la cual hay una fuente de energía en la etiqueta.
+La RFID de UHF (RFID de Ultra Alta Frecuencia, del inglés Ultra-High Frequency RFID) es una
+forma común de RFID que se utiliza en algunas licencias de conducir. Los lectores envían señales en la
+banda de 902-928 MHz en Estados Unidos. Las etiquetas se pueden comunicar a distancias de varios
+metros al cambiar la forma en que reflejan las señales de los lectores; el lector es capaz de recuperar estas
+reflexiones. A esta forma de operar se le conoce como retrodispersión (backscatter).
+La RFID de HF (RFID de Alta Frecuencia, del inglés High Frequency RFID) es otro tipo popular de
+RFID que opera a 13.56 MHz y se utiliza por lo general en pasaportes, tarjetas de crédito, libros y sistemas
+de pago sin contacto. La RFID de HF tiene un rango corto, por lo común de un metro o menos, debido a
+que el mecanismo físico se basa en la inducción en vez de la retrodispersión. Existen también otras formas
+de RFID que utilizan otras frecuencias, como la RFID de LF (RFID de Baja Frecuencia, del inglés Low
+Frequency RFID) que se desarrolló antes de la RFID de HF y se utilizaba para rastrear animales. Es el tipo
+de RFID que podría llegar a estar en su gato.
+Los lectores RFID deben resolver de alguna manera el problema de lidiar con varias etiquetas dentro
+del rango de lectura. Esto significa que una etiqueta no puede simplemente responder cuando escucha a
+un lector, o que puede haber colisiones entre las señales de varias etiquetas. La solución es similar a la
+  
+
+64 INTRODUCCIÓN CAP. 1
+metodología aplicada en el estándar 802.11: las etiquetas esperan durante un intervalo corto y aleatorio
+antes de responder con su identificación, lo cual permite al lector reducir el número de etiquetas indivi-
+duales e interrogarlas más.
+La seguridad es otro problema. La habilidad de los lectores RFID de rastrear con facilidad un objeto,
+y por ende a la persona que lo utiliza, puede representar una invasión a la privacidad. Por desgracia es
+difícil asegurar las etiquetas RFID debido a que carecen del poder de cómputo y de comunicación reque-
+rido para ejecutar algoritmos criptográficos sólidos. En vez de ello se utilizan medidas débiles como las
+contraseñas (que se pueden quebrantar con facilidad). Si un oficial en una aduana puede leer de manera
+remota una tarjeta de identificación, ¿qué puede evitar que otras personas rastreen esa misma tarjeta sin
+que usted lo sepa? No mucho.
+Las etiquetas RFID empezaron como chips de identificación, pero se están convirtiendo con rapidez
+en computadoras completas. Por ejemplo, muchas etiquetas tienen memoria que se puede actualizar y
+que podemos consultar después, de modo que se puede almacenar información sobre lo que ocurra con
+el objeto etiquetado. Reiback y colaboradores (2006) demostraron que esto significa que se aplican todos
+los problemas comunes del software malicioso de computadora, sólo que ahora sería posible usar su gato
+o su pasaporte para esparcir un virus de RFID.
+La red de sensores va un paso más allá en cuanto a capacidad, en comparación con la RFID. Las
+redes de sensores se implementan para vigilar los aspectos del mundo físico. Hasta ahora se han utilizado
+en su mayor parte para la experimentación científica, como el monitoreo de los hábitats de las aves, la
+actividad volcánica y la migración de las cebras, pero es probable que pronto surjan aplicaciones para el
+cuidado de la salud, equipo de monitoreo de vibraciones y rastreo de artículos congelados, refrigerados u
+otro tipo de perecederos.
+Los nodos sensores son pequeñas computadoras, por lo general del tamaño de un control de llave, que
+tienen sensores de temperatura, vibración y demás. Muchos nodos se colocan en el entorno que se va a
+vigilar. Por lo general tienen baterías, aunque también pueden obtener energía de las vibraciones del Sol.
+Al igual que la RFID, tener suficiente energía es un reto clave por lo que los nodos deben comunicarse con
+cuidado para transmitir la información de sus sensores a un punto externo de recolección. Una estrategia
+común es que los nodos se autoorganicen para transmitir mensajes unos de otros, como se muestra en la
+figura 1-37. Este diseño se conoce como red multisaltos.
+Salto
+inalámbrico
+Nodo
+sensor
+Punto de
+recolección
+de datos
+Figura 1-37. Topología multisaltos de una red de sensores.
+Es probable que las redes RFID y de sensores sean mucho más capaces y dominantes en el futuro. Los
+investigadores ya han combinado lo mejor de ambas tecnologías al crear prototipos de etiquetas RFID con
+sensores de luz, movimiento y otros sensores (Sample y colaboradores, 2008).
+  
+
