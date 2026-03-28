@@ -1,0 +1,464 @@
+SEC. 1.4 MODELOS DE REFERENCIA 35
+Vale la pena mencionar una analogía con los lenguajes de programación. Un servicio es como un tipo
+de datos abstracto o un objeto en un lenguaje orientado a objetos. Define las operaciones que se pueden
+realizar en un objeto, pero no especifica cómo se implementan estas operaciones. En contraste, un protocolo se relaciona con la implementación del servicio y como tal, no es visible al usuario del mismo.
+Muchos protocolos antiguos no diferenciaban el servicio del protocolo. En efecto, una capa típica
+podría tener una primitiva de servicio SEND PACKET en donde el usuario proporcionaba un apuntador
+hacia un paquete completamente ensamblado. Este arreglo significaba que los usuarios podían ver de
+inmediato todos los cambios en el protocolo. Ahora, la mayoría de los diseñadores de redes consideran
+dicho diseño como un error garrafal.
+Capa k
+Capa k + 1
+Capa k - 1
+Protocolo
+Servicio proporcionado por la capa k
+Capa k
+Capa k + 1
+Capa k - 1
+Figura 1-19. La relación entre un servicio y un protocolo.
+1.4 MODELOS DE REFERENCIA
+Ahora que hemos analizado en lo abstracto las redes basadas en capas, es tiempo de ver algunos ejemplos.
+Analizaremos dos arquitecturas de redes importantes: el modelo de referencia OSI y el modelo de referencia TCP/IP. Aunque ya casi no se utilizan los protocolos asociados con el modelo OSI, el modelo en sí
+es bastante general y sigue siendo válido; asimismo, las características en cada nivel siguen siendo muy
+importantes. El modelo TCP/IP tiene las propiedades opuestas: el modelo en sí no se utiliza mucho, pero
+los protocolos son usados ampliamente. Por esta razón veremos ambos elementos con detalle. Además,
+algunas veces podemos aprender más de los fracasos que de los éxitos.
+1.4.1 El modelo de referencia OSI
+El modelo OSI se muestra en la figura 1-20 (sin el medio físico). Este modelo se basa en una propuesta
+desarrollada por la Organización Internacional de Normas (ISO) como el primer paso hacia la estandarización internacional de los protocolos utilizados en las diversas capas (Day y Zimmerman, 1983). Este
+modelo se revisó en 1995 (Day, 1995) y se le llama Modelo de referencia OSI (Interconexión de Sistemas
+Abiertos, del inglés Open Systems Interconnection) de la ISO puesto que se ocupa de la conexión de sistemas abiertos; esto es, sistemas que están abiertos a la comunicación con otros sistemas. Para abreviar,
+lo llamaremos modelo OSI.
+El modelo OSI tiene siete capas. Los principios que se aplicaron para llegar a las siete capas se pueden resumir de la siguiente manera:
+1. Se debe crear una capa en donde se requiera un nivel diferente de abstracción.
+2. Cada capa debe realizar una función bien definida.
+3. La función de cada capa se debe elegir teniendo en cuenta la definición de protocolos estandarizados internacionalmente.
+                 36 INTRODUCCIÓN CAP. 1
+4. Es necesario elegir los límites de las capas de modo que se minimice el flujo de información a
+través de las interfaces.
+5. La cantidad de capas debe ser suficiente como para no tener que agrupar funciones distintas en
+la misma capa; además, debe ser lo bastante pequeña como para que la arquitectura no se vuelva
+inmanejable.
+A continuación estudiaremos cada capa del modelo en orden, empezando por la capa inferior. Tenga en cuenta que el modelo OSI en sí no es una arquitectura de red, ya que no especifica los servicios y
+protocolos exactos que se van a utilizar en cada capa. Sólo indica lo que una debe hacer. Sin embargo, la
+ISO también ha elaborado estándares para todas las capas, aunque no son parte del modelo de referencia
+en sí. Cada uno se publicó como un estándar internacional separado. Aunque el modelo (en parte) es muy
+usado, los protocolos asociados han estado en el olvido desde hace tiempo.
+La capa física
+La capa física se relaciona con la transmisión de bits puros a través de un canal de transmisión. Los
+aspectos de diseño tienen que ver con la acción de asegurarse que cuando uno de los lados envíe un bit 1
+el otro lado lo reciba como un bit 1, no como un bit 0. En este caso las preguntas típicas son: ¿que señales
+Capa
+Presentación
+Aplicación
+Sesión
+Transporte
+Red
+Enlace de datos
+Física
+7 6 5 4 3 2 1
+Interfaz
+Host A
+Nombre de la unidad
+intercambiada
+APDU
+PPDU
+SPDU
+TPDU
+Paquete
+Trama
+Bit
+Presentación
+Aplicación
+Sesión
+Transporte
+Red
+Enlace de datos
+Física
+Host B
+Red Red
+Enlace de datos Enlace de datos
+Física Física
+Enrutador Enrutador
+Protocolo interno de la subred
+Protocolo de aplicación
+Protocolo de presentación
+Protocolo de transporte
+Protocolo de sesión
+Límite de subred de comunicación
+Protocolo de host-enrutador de la capa de red
+Protocolo de host-enrutador de la capa de enlace de datos
+Protocolo de host-enrutador de la capa física
+Figura 1-20. El modelo de referencia OSI.
+                 SEC. 1.4 MODELOS DE REFERENCIA 37
+eléctricas se deben usar para representar un 1 y un 0?, ¿cuántos nanosegundos dura un bit?, ¿la transmisión puede proceder de manera simultánea en ambas direcciones?, ¿cómo se establece la conexión inicial
+y cómo se interrumpe cuando ambos lados han terminado?, ¿cuántos pines tiene el conector de red y para
+qué sirve cada uno? Los aspectos de diseño tienen que ver con las interfaces mecánica, eléctrica y de temporización, así como con el medio de transmisión físico que se encuentra bajo la capa física.
+La capa de enlace de datos
+La principal tarea de la capa de enlace de datos es transformar un medio de transmisión puro en una línea
+que esté libre de errores de transmisión. Enmascara los errores reales, de manera que la capa de red no
+los vea. Para lograr esta tarea, el emisor divide los datos de entrada en tramas de datos (por lo general,
+de algunos cientos o miles de bytes) y transmite las tramas en forma secuencial. Si el servicio es confiable,
+para confirmar la recepción correcta de cada trama, el receptor devuelve una trama de confirmación
+de recepción.
+Otra cuestión que surge en la capa de enlace de datos (y en la mayoría de las capas superiores) es
+cómo evitar que un transmisor rápido inunde de datos a un receptor lento. Tal vez sea necesario algún
+mecanismo de regulación de tráfico para notificar al transmisor cuando el receptor puede aceptar más
+datos.
+Las redes de difusión tienen una consideración adicional en la capa de enlace de datos: cómo controlar el acceso al canal compartido. Una subcapa especial de la capa de enlace de datos, conocida como
+subcapa de control de acceso al medio, es la que se encarga de este problema.
+La capa de red
+La capa de red controla la operación de la subred. Una cuestión clave de diseño es determinar cómo se
+encaminan los paquetes desde el origen hasta el destino. Las rutas se pueden basar en tablas estáticas que
+se “codifican” en la red y rara vez cambian, aunque es más común que se actualicen de manera automática
+para evitar las fallas en los componentes. También se pueden determinar el inicio de cada conversación;
+por ejemplo, en una sesión de terminal al iniciar sesión en una máquina remota. Por último, pueden ser
+muy dinámicas y determinarse de nuevo para cada paquete, de manera que se pueda reflejar la carga actual
+en la red.
+Si hay demasiados paquetes en la subred al mismo tiempo, se interpondrán en el camino unos con
+otros y formarán cuellos de botella. El manejo de la congestión también es responsabilidad de la capa de
+red, en conjunto con las capas superiores que adaptan la carga que colocan en la red. Otra cuestión más
+general de la capa de red es la calidad del servicio proporcionado (retardo, tiempo de tránsito, variaciones,
+etcétera).
+Cuando un paquete tiene que viajar de una red a otra para llegar a su destino, pueden surgir muchos
+problemas. El direccionamiento utilizado por la segunda red puede ser distinto del que utiliza la primera.
+La segunda red tal vez no acepte el paquete debido a que es demasiado grande. Los protocolos pueden
+ser diferentes, etc. Es responsabilidad de la capa de red solucionar todos estos problemas para permitir la
+interconexión de redes heterogéneas.
+En las redes de difusión, el problema de encaminamiento es simple, por lo que con frecuencia la capa
+de red es delgada o incluso inexistente.
+La capa de transporte
+La función básica de la capa de transporte es aceptar datos de la capa superior, dividirlos en unidades
+más pequeñas si es necesario, pasar estos datos a la capa de red y asegurar que todas las piezas lleguen
+                 38 INTRODUCCIÓN CAP. 1
+correctamente al otro extremo. Además, todo esto se debe realizar con eficiencia y de una manera que
+aísle las capas superiores de los inevitables cambios en la tecnología de hardware que se dan con el transcurso del tiempo.
+La capa de transporte también determina el tipo de servicio que debe proveer a la capa de sesión y, en
+última instancia, a los usuarios de la red. El tipo más popular de conexión de transporte es un canal punto
+a punto libre de errores que entrega los mensajes o bytes en el orden en el que se enviaron. Sin embargo
+existen otros posibles tipos de servicio de transporte, como el de mensajes aislados sin garantía sobre
+el orden de la entrega y la difusión de mensajes a múltiples destinos. El tipo de servicio se determina al
+establecer la conexión (cabe mencionar que es imposible lograr un canal libre de errores; lo que se quiere
+decir en realidad con este término es que la tasa de errores es lo bastante baja como para ignorarla en la
+práctica).
+La capa de transporte es una verdadera capa de extremo a extremo; lleva los datos por toda la ruta
+desde el origen hasta el destino. En otras palabras, un programa en la máquina de origen lleva a cabo
+una conversación con un programa similar en la máquina de destino mediante el uso de los encabezados en los mensajes y los mensajes de control. En las capas inferiores cada uno de los protocolos está
+entre una máquina y sus vecinos inmediatos, no entre las verdaderas máquinas de origen y de destino,
+que pueden estar separadas por muchos enrutadores. En la figura 1-20 se muestra la diferencia entre
+las capas de la 1 a la 3, que están encadenadas, y entre las capas de la 4 a la 7, que son de extremo a
+extremo.
+La capa de sesión
+La capa de sesión permite a los usuarios en distintas máquinas establecer sesiones entre ellos. Las sesiones ofrecen varios servicios, incluyendo el control del diálogo (llevar el control de quién va a transmitir),
+el manejo de tokens (evitar que dos partes intenten la misma operación crítica al mismo tiempo) y la
+sincronización (usar puntos de referencia en las transmisiones extensas para reanudar desde el último
+punto de referencia en caso de una interrupción).
+La capa de presentación
+A diferencia de las capas inferiores, que se enfocan principalmente en mover los bits de un lado a otro,
+la capa de presentación se enfoca en la sintaxis y la semántica de la información transmitida. Para
+hacer posible la comunicación entre computadoras con distintas representaciones internas de datos,
+podemos definir de una manera abstracta las estructuras de datos que se van a intercambiar, junto con
+una codificación estándar que se use “en el cable”. La capa de presentación maneja estas estructuras
+de datos abstractas y permite definir e intercambiar estructuras de datos de mayor nivel (por ejemplo,
+registros bancarios).
+La capa de aplicación
+La capa de aplicación contiene una variedad de protocolos que los usuarios necesitan con frecuencia. Un
+protocolo de aplicación muy utilizado es HTTP (Protocolo de Transferencia de Hipertexto, del inglés
+HyperText Transfer Protocol), el cual forma la base para la World Wide Web. Cuando un navegador desea
+una página web, envía el nombre de la página que quiere al servidor que la hospeda mediante el uso de
+HTTP. Después el servidor envía la página de vuelta. Hay otros protocolos de aplicación que se utilizan
+para transferir archivos, enviar y recibir correo electrónico y noticias.
+                 SEC. 1.4 MODELOS DE REFERENCIA 39
+1.4.2 El modelo de referencia TCP/IP
+Pasemos ahora del modelo de referencia OSI al modelo de referencia que se utiliza en la más vieja de
+todas las redes de computadoras de área amplia: ARPANET y su sucesora, Internet. Aunque más adelante veremos una breve historia de ARPANET, es conveniente mencionar ahora unos cuantos aspectos
+de esta red. ARPANET era una red de investigación patrocinada por el DoD (Departamento de Defensa
+de Estados Unidos, del inglés U.S. Department of the Defense). En un momento dado llegó a conectar
+cientos de universidades e instalaciones gubernamentales mediante el uso de líneas telefónicas rentadas.
+Cuando después se le unieron las redes de satélites y de radio, los protocolos existentes tuvieron problemas para interactuar con ellas, de modo que se necesitaba una nueva arquitectura de referencia. Así, casi
+desde el principio la habilidad de conectar varias redes sin problemas fue uno de los principales objetivos de diseño. Posteriormente esta arquitectura se dio a conocer como el Modelo de referencia TCP/IP,
+debido a sus dos protocolos primarios. Este modelo se definió por primera vez en Cerf y Kahn (1974);
+después se refinó y definió como estándar en la comunidad de Internet (Braden, 1989). Clark (1988) describe la filosofía de diseño detrás de este modelo.
+Debido a la preocupación del DoD de que alguno de sus valiosos hosts, enrutadores y puertas de enlace de interredes pudieran ser volados en pedazos en cualquier momento por un ataque de la antigua Unión
+Soviética, otro de los objetivos principales fue que la red pudiera sobrevivir a la pérdida de hardware de
+la subred sin que se interrumpieran las conversaciones existentes. En otras palabras, el DoD quería que
+las conexiones permanecieran intactas mientras las máquinas de origen y de destino estuvieran funcionando, incluso aunque algunas de las máquinas o líneas de transmisión en el trayecto dejaran de funcionar
+en forma repentina. Además, como se tenían en mente aplicaciones con requerimientos divergentes que
+abarcaban desde la transferencia de archivos hasta la transmisión de voz en tiempo real, se necesitaba una
+arquitectura flexible.
+La capa de enlace
+Todos estos requerimientos condujeron a la elección de una red de conmutación de paquetes basada en
+una capa sin conexión que opera a través de distintas redes. La capa más baja en este modelo es la capa de
+enlace; ésta describe qué enlaces (como las líneas seriales y Ethernet clásica) se deben llevar a cabo para
+cumplir con las necesidades de esta capa de interred sin conexión. En realidad no es una capa en el sentido común del término, sino una interfaz entre los hosts y los enlaces de transmisión. El primer material
+sobre el modelo TCP/IP tiene poco que decir sobre ello.
+La capa de interred
+Esta capa es el eje que mantiene unida a toda la arquitectura. Aparece en la figura 1-21 con una correspondencia aproximada a la capa de red de OSI. Su trabajo es permitir que los hosts inyecten paquetes en
+cualquier red y que viajen de manera independiente hacia el destino (que puede estar en una red distinta).
+Incluso pueden llegar en un orden totalmente diferente al orden en que se enviaron, en cuyo caso es responsabilidad de las capas más altas volver a ordenarlos, si se desea una entrega en orden. Tenga en cuenta
+que aquí utilizamos “interred” en un sentido genérico, aunque esta capa esté presente en la Internet.
+La analogía aquí es con el sistema de correos convencional (lento). Una persona puede dejar una
+secuencia de cartas internacionales en un buzón en un país y, con un poco de suerte, la mayoría de ellas se
+entregarán a la dirección correcta en el país de destino. Es probable que las cartas pasen a través de una
+o más puertas de enlace de correo internacionales en su trayecto, pero esto es transparente a los usuarios.
+Además, los usuarios no necesitan saber que cada país (es decir, cada red) tiene sus propias estampillas,
+tamaños de sobre preferidos y reglas de entrega.
+                 40 INTRODUCCIÓN CAP. 1
+La capa de interred define un formato de paquete y un protocolo oficial llamado IP (Protocolo de
+Internet, del inglés Internet Protocol), además de un protocolo complementario llamado ICMP (Protocolo de Mensajes de Control de Internet, del inglés Internet Control Message Protocol) que le ayuda
+a funcionar. La tarea de la capa de interred es entregar los paquetes IP a donde se supone que deben ir.
+Aquí el ruteo de los paquetes es sin duda el principal aspecto, al igual que la congestión (aunque el IP no
+ha demostrado ser efectivo para evitar la congestión).
+La capa de transporte
+Por lo general, a la capa que está arriba de la capa de interred en el modelo TCP/IP se le conoce como
+capa de transporte; y está diseñada para permitir que las entidades pares, en los nodos de origen y de
+destino, lleven a cabo una conversación, al igual que en la capa de transporte de OSI. Aquí se definieron
+dos protocolos de transporte de extremo a extremo. El primero, TCP (Protocolo de Control de la Transmisión, del inglés Transmission Control Protocol), es un protocolo confiable orientado a la conexión que
+permite que un flujo de bytes originado en una máquina se entregue sin errores a cualquier otra máquina
+en la interred. Este protocolo segmenta el flujo de bytes entrante en mensajes discretos y pasa cada uno a
+la capa de interred. En el destino, el proceso TCP receptor vuelve a ensamblar los mensajes recibidos para
+formar el flujo de salida. El TCP también maneja el control de flujo para asegurar que un emisor rápido no
+pueda inundar a un receptor lento con más mensajes de los que pueda manejar.
+El segundo protocolo en esta capa, UDP (Protocolo de Datagrama de Usuario, del inglés User
+Datagram Protocol), es un protocolo sin conexión, no confiable para aplicaciones que no desean la asignación de secuencia o el control de flujo de TCP y prefieren proveerlos por su cuenta. También se utiliza
+mucho en las consultas de petición-respuesta de una sola ocasión del tipo cliente-servidor, y en las aplicaciones en las que es más importante una entrega oportuna que una entrega precisa, como en la transmisión
+de voz o video. En la figura 1-22 se muestra la relación entre IP, TCP y UDP. Desde que se desarrolló el
+modelo, el IP se ha implementado en muchas otras redes.
+La capa de aplicación
+El modelo TCP/IP no tiene capas de sesión o de presentación, ya que no se consideraron necesarias. Las
+aplicaciones simplemente incluyen cualquier función de sesión y de presentación que requieran. La experiencia con el modelo OSI ha demostrado que esta visión fue correcta: estas capas se utilizan muy poco
+en la mayoría de las aplicaciones.
+OSI TCP/IP
+Aplicación
+Presentación
+Sesión
+Transporte
+Red
+Enlace de datos
+Física
+7 6 5 4 3 2 1
+Aplicación
+Transporte
+Interred
+Enlace
+No están presentes
+en el modelo
+Figura 1-21. El modelo de referencia TCP/IP.
+                 SEC. 1.4 MODELOS DE REFERENCIA 41
+Encima de la capa de transporte se encuentra la capa de aplicación. Ésta contiene todos los protocolos de alto nivel. Entre los primeros protocolos están el de terminal virtual (TELNET), transferencia de
+archivos (FTP) y correo electrónico (SMTP). A través de los años se han agregado muchos otros protocolos. En la figura 1-22 se muestran algunos de los más importantes que veremos más adelante: el Sistema
+de nombres de dominio (DNS) para resolución de nombres de hosts a sus direcciones de red; HTTP, el
+protocolo para recuperar páginas de la World Wide Web; y RTP, el protocolo para transmitir medios en
+tiempo real, como voz o películas.
+1.4.3 El modelo utilizado en este libro
+Como dijimos antes, la fortaleza del modelo de referencia OSI es el modelo en sí (excepto las capas de
+presentación y de sesión), el cual ha demostrado ser excepcionalmente útil para hablar sobre redes
+de computadoras. En contraste, la fortaleza del modelo de referencia TCP/IP son los protocolos, que
+se han utilizado mucho durante varios años. Como a los científicos de computadoras les gusta hacer sus
+propias herramientas, utilizaremos el modelo híbrido de la figura 1-23 como marco de trabajo para este
+libro.
+5 Aplicación
+4 Transporte
+3 Red
+2 Enlace
+1 Física
+Figura 1-23. El modelo de referencia que usaremos en este libro.
+Este modelo tiene cinco capas, empezando por la capa física, pasando por las capas de enlace, red y
+transporte hasta llegar a la capa de aplicación. La capa física especifica cómo transmitir bits a través de
+distintos tipos de medios como señales eléctricas (u otras señales analógicas). La capa de enlace trata
+sobre cómo enviar mensajes de longitud finita entre computadoras conectadas de manera directa con niveles
+específicos de confiabilidad. Ethernet y 802.11 son ejemplos de protocolos de capa de enlace.
+Enlace DSL SONET 802.11 Ethernet
+IP ICMP
+HTTP SMTP RTP DNS
+TCP UDP
+Interred
+Transporte
+Capas Protocolos
+Aplicación
+Figura 1-22. El modelo TCP/IP con algunos de los protocolos.
+                 42 INTRODUCCIÓN CAP. 1
+La capa de red se encarga de combinar varios enlaces múltiples en redes, y redes de redes en interredes, de manera que podamos enviar paquetes entre computadoras distantes. Aquí se incluye la tarea de
+buscar la ruta por la cual enviarán los paquetes. IP es el principal protocolo de ejemplo que estudiaremos
+para esta capa. La capa de transporte fortalece las garantías de entrega de la capa de Red, por lo general
+con una mayor confiabilidad, además provee abstracciones en la entrega, como un flujo de bytes confiable, que coincida con las necesidades de las distintas aplicaciones. TCP es un importante ejemplo de un
+protocolo de capa de transporte.
+Por último, la capa de aplicación contiene programas que hacen uso de la red. Muchas aplicaciones
+en red tienen interfaces de usuario, como un navegador web. Sin embargo, nuestro interés está en la parte del programa que utiliza la red. En el caso del navegador web se trata del protocolo HTTP. También
+hay programas de soporte importantes en la capa de aplicación, como el DNS, que muchas aplicaciones
+utilizan.
+La secuencia de nuestros capítulos se basa en este modelo. De esta forma, retenemos el valor del
+modelo OSI para comprender las arquitecturas de red al tiempo que nos concentramos principalmente
+en los protocolos que son importantes en la práctica, desde TCP/IP y los protocolos relacionados hasta los
+más recientes como 802.11, SONET y Bluetooth.
+1.4.4 Comparación de los modelos de referencia OSI y TCP/IP
+Los modelos de referencia OSI y TCP/IP tienen mucho en común. Ambos se basan en el concepto de una
+pila de protocolos independientes. Además, la funcionalidad de las capas es muy similar. Por ejemplo, en
+ambos modelos las capas por encima de la de transporte, incluyendo ésta, se encuentran ahí para proporcionar un servicio de transporte independiente de la red, de extremo a extremo, para los procesos que desean comunicarse. Estas capas forman el proveedor de transporte. También en ambos modelos, las capas
+que están arriba de la de transporte son usuarias orientadas a la aplicación del servicio de transporte.
+A pesar de estas similitudes fundamentales, los dos modelos también tienen muchas diferencias. En
+esta sección nos enfocaremos en las diferencias clave entre los dos modelos de referencia. Es importante
+tener en cuenta que aquí compararemos los modelos de referencia y no las pilas de protocolos correspondientes. Más adelante estudiaremos los protocolos en sí. Un libro completo dedicado a comparar y
+contrastar TCP/IP y OSI es el de Piscitello y Chapin (1993).
+Hay tres conceptos básicos para el modelo OSI:
+1. Servicios.
+2. Interfaces.
+3. Protocolos.
+Quizá, la mayor contribución del modelo OSI es que hace explícita la distinción entre estos tres conceptos. Cada capa desempeña ciertos servicios para la capa que está sobre ella. La definición del servicio
+indica lo que hace la capa, no cómo acceden a ella las entidades superiores ni cómo funciona. Define la
+semántica de la capa.
+La interfaz de una capa indica a los procesos superiores cómo pueden acceder a ella. Especifica cuá-
+les son los parámetros y qué resultados se pueden esperar. Pero no dice nada sobre su funcionamiento
+interno.
+Por último, la capa es la que debe decidir qué protocolos de iguales utilizar. Puede usar los protocolos
+que quiera, siempre y cuando realice el trabajo (es decir, que provea los servicios ofrecidos). También los
+puede cambiar a voluntad sin afectar el software de las capas superiores.
+Estas ideas encajan muy bien con las ideas modernas sobre la programación orientada a objetos.
+Al igual que una capa, un objeto tiene un conjunto de métodos (operaciones) que los procesos fuera
+                 SEC. 1.4 MODELOS DE REFERENCIA 43
+del objeto pueden invocar. La semántica de estos métodos define el conjunto de servicios que ofrece
+el objeto. Los parámetros y resultados de los métodos forman la interfaz del objeto. El código interno del objeto es su protocolo y no se puede ver ni es de la incumbencia de las entidades externas al
+objeto.
+Al principio, el modelo TCP/IP no tenía una distinción clara entre los servicios, las interfaces y
+los protocolos, aunque las personas han tratado de reajustarlo a fin de hacerlo más parecido al OSI.
+Por ejemplo, los únicos servicios que realmente ofrece la capa de interred son SEND IP PACKET y RECEIVE IP
+PACKET. Como consecuencia, los protocolos en el modelo OSI están ocultos de una mejor forma que en el
+modelo TCP/IP, además se pueden reemplazar con relativa facilidad a medida que la tecnología cambia.
+La capacidad de realizar dichos cambios con transparencia es uno de los principales propósitos de tener
+protocolos en capas en primer lugar.
+El modelo de referencia OSI se ideó antes de que se inventaran los protocolos correspondientes.
+Este orden significa que el modelo no estaba orientado hacia un conjunto específico de protocolos,
+un hecho que lo hizo bastante general. La desventaja de este orden fue que los diseñadores no tenían
+mucha experiencia con el tema y no supieron bien qué funcionalidad debían colocar en cada una de las
+capas.
+Por ejemplo, en un principio la capa de enlace de datos trabajaba sólo con redes de punto a punto.
+Cuando surgieron las redes de difusión, fue necesario insertar una nueva subcapa al modelo. Además,
+cuando las personas empezaron a construir redes reales mediante el modelo OSI y los protocolos existentes, se descubrió que estas redes no coincidían con las especificaciones de los servicios requeridos, de
+modo que tuvieron que integrar en el modelo subcapas convergentes que permitieran cubrir las diferencias. Finalmente, el comité en un principio esperaba que cada país tuviera una red operada por el gobierno
+en la que se utilizaran los protocolos OSI, por lo que no se tomó en cuenta la interconexión de redes. Para
+no hacer el cuento largo, las cosas no salieron como se esperaba.
+Con TCP/IP sucedió lo contrario: primero llegaron los protocolos y el modelo era en realidad
+sólo una descripción de los protocolos existentes. No hubo problema para que los protocolos se
+ajustaran al modelo. Encajaron a la perfección. El único problema fue que el modelo no encajaba en
+ninguna otra pila de protocolos. En consecuencia, no era útil para describir otras redes que no fueran
+TCP/IP.
+Pasando de las cuestiones filosóficas a las más específicas, una diferencia obvia entre los dos
+modelos está en el número de capas: el modelo OSI tiene siete capas, mientras que el modelo TCP/
+IP tiene cuatro. Ambos tienen capas de (inter)red, transporte y aplicación, pero las demás capas son
+distintas.
+Hay otra diferencia en el área de la comunicación sin conexión frente a la comunicación orientada
+a conexión. El modelo OSI soporta ambos tipos de comunicación en la capa de red, pero sólo la comunicación orientada a conexión en la capa de transporte, en donde es más importante (ya que el servicio
+de transporte es visible a los usuarios). El modelo TCP/IP sólo soporta un modo en la capa de red (sin
+conexión) pero soporta ambos en la capa de transporte, de manera que los usuarios tienen una alternativa,
+que es muy importante para los protocolos simples de petición-respuesta.
+1.4.5 Una crítica al modelo y los protocolos OSI
+Ni el modelo OSI y sus protocolos, ni el modelo TCP/IP y sus protocolos son perfectos. Ambos pueden
+recibir bastantes críticas, y así se ha hecho. En ésta y en la siguiente sección analizaremos algunas de ellas.
+Empezaremos con el modelo OSI y después examinaremos el modelo TCP/IP.
+Para cuando se publicó la segunda edición de este libro (1989), a muchos expertos en el campo les
+pareció que el modelo OSI y sus protocolos iban a adueñarse del mundo y sacar todo lo demás a su paso.
+                 44 INTRODUCCIÓN CAP. 1
+Pero esto no fue así. ¿Por qué? Tal vez sea útil analizar en retrospectiva algunas de las razones. Podemos
+resumirlas de la siguiente manera:
+1. Mala sincronización.
+2. Mala tecnología.
+3. Malas implementaciones.
+4. Mala política.
+Mala sincronización
+Veamos la razón número uno: mala sincronización. El tiempo en el cual se establece un estándar es absolutamente imprescindible para su éxito. David Clark, del Massachusetts Institute of Technology (MIT),
+tiene una teoría de estándares a la que llama el apocalipsis de los dos elefantes, la cual se ilustra en la
+figura 1-24.
+Esta figura muestra la cantidad de actividad alrededor de un nuevo tema. Cuando se descubre el tema
+por primera vez, hay una ráfaga de actividades de investigación en forma de discusiones, artículos y
+reuniones. Después de cierto tiempo esta actividad disminuye, las corporaciones descubren el tema y llega
+la ola de inversión de miles de millones de dólares.
+Es imprescindible que los estándares se escriban en el intermedio entre los dos “elefantes”. Si se escriben demasiado pronto (antes de que los resultados de la investigación estén bien establecidos), tal vez el
+tema no se entienda bien todavía; el resultado es un estándar malo. Si se escriben demasiado tarde, es probable que muchas empresas hayan hecho ya importantes inversiones en distintas maneras de hacer las cosas,
+de modo que los estándares se ignorarán en la práctica. Si el intervalo entre los dos elefantes es muy corto
+(ya que todos tienen prisa por empezar), la gente que desarrolla los estándares podría quedar aplastada.
+En la actualidad, parece que los protocolos estándar de OSI quedaron aplastados. Para cuando aparecieron los protocolos de OSI, los protocolos TCP/IP competidores ya se utilizaban mucho en universidades que hacían investigaciones. Aunque todavía no llegaba la ola de inversión de miles de millones
+de dólares, el mercado académico era lo bastante grande como para que muchos distribuidores empezaran
+a ofrecer con cautela los productos TCP/IP. Para cuando llegó el modelo OSI, los distribuidores no quisieron apoyar una segunda pila de protocolos hasta que se vieron obligados a hacerlo, de modo que no hubo
+ofertas iniciales. Como cada empresa estaba esperando a que otra tomara la iniciativa, ninguna lo hizo y
+OSI nunca se llevó a cabo.
+Tiempo
+Actividad
+Investigación
+Estándares
+Inversión de miles de
+millones de dólares
+Figura 1-24. El apocalipsis de los dos elefantes.
+                 SEC. 1.4 MODELOS DE REFERENCIA 45
+Mala tecnología
+La segunda razón por la que OSI nunca tuvo éxito fue que tanto el modelo como los protocolos tienen
+fallas. La opción de siete capas era más política que técnica, además de que dos de las capas (sesión y
+presentación) están casi vacías, mientras que otras dos (enlace de datos y red) están demasiado llenas.
+El modelo OSI, junto con sus correspondientes definiciones y protocolos de servicios, es muy
+complejo. Si se apilan, los estándares impresos ocupan una fracción considerable de un metro de papel.
+Además son difíciles de implementar e ineficientes en su operación. En este contexto nos viene a la mente
+un acertijo propuesto por Paul Mockapetris y citado por Rose (1993):
+P: ¿Qué obtenemos al cruzar un pandillero con un estándar internacional?
+R: Alguien que le hará una oferta que no podrá comprender.
+Además de ser incomprensible, otro problema con el modelo OSI es que algunas funciones como
+el direccionamiento, el control de flujo y el control de errores, vuelven a aparecer una y otra vez en cada
+capa. Por ejemplo, Saltzer y sus colaboradores (1984) han señalado que para ser efectivo, hay que llevar a
+cabo el control de errores en la capa más alta, por lo que repetirlo una y otra vez en cada una de las capas
+más bajas es con frecuencia innecesario e ineficiente.
+Malas implementaciones
+Dada la enorme complejidad del modelo y los protocolos, no es sorprendente que las implementaciones
+iniciales fueran enormes, pesadas y lentas. Todos los que las probaron se arrepintieron. No tuvo que pasar
+mucho tiempo para que las personas asociaran “OSI” con la “mala calidad”. Aunque los productos mejoraron con el tiempo, la imagen perduró.
+En contraste, una de las primeras implementaciones de TCP/IP fue parte del UNIX, de Berkeley, y
+era bastante buena (y además, gratuita). Las personas empezaron a utilizarla rápidamente, lo cual provocó
+que se formara una extensa comunidad de usuarios, lo que condujo a mejoras, lo que llevó a una comunidad todavía mayor. En este caso la espiral fue hacia arriba, en vez de ir hacia abajo.
+Malas políticas
+Gracias a la implementación inicial, mucha gente (en especial los académicos) pensaba que TCP/IP era
+parte de UNIX, y UNIX en la década de 1980 para los académicos era algo así como la paternidad (que
+en ese entonces se consideraba erróneamente como maternidad) y el pay de manzana para los estadounidenses comunes.
+Por otro lado, OSI se consideraba en muchas partes como la invención de los ministerios europeos de
+telecomunicaciones, de la Comunidad Europea y después, del gobierno de Estados Unidos. Esta creencia
+no era del todo justificada, pero la simple idea de un grupo de burócratas gubernamentales que trataban de
+obligar a los pobres investigadores y programadores que estaban en las trincheras desarrollando verdaderas redes de computadoras a que adoptaran un estándar técnicamente inferior no fue de mucha utilidad
+para la causa de OSI. Algunas personas vieron este suceso como algo similar a cuando IBM anunció en
+la década de 1960 que PL/I era el lenguaje del futuro, o cuando luego el DoD corrigió esto para anunciar
+que en realidad el lenguaje era Ada.
+1.4.6 Una crítica al modelo de referencia TCP/IP
+El modelo y los protocolos de TCP/IP también tienen sus problemas. Primero, el modelo no diferencia con claridad los conceptos de servicios, interfaces y protocolos. La buena práctica de la ingeniería
+                 46 INTRODUCCIÓN CAP. 1
+de software requiere una distinción entre la especificación y la implementación, algo que OSI hace con
+mucho cuidado y que TCP/IP no. En consecuencia, el modelo TCP/IP no sirve mucho de guía para diseñar
+modernas redes que utilicen nuevas tecnologías.
+Segundo, el modelo TCP/IP no es nada general y no es muy apropiado para describir cualquier pila
+de protocolos aparte de TCP/IP. Por ejemplo, es imposible tratar de usar el modelo TCP/IP para describir
+Bluetooth.
+Tercero, la capa de enlace en realidad no es una capa en el sentido normal del término como se utiliza
+en el contexto de los protocolos en capas. Es una interfaz (entre las capas de red y de enlace de datos). La
+diferencia entre una interfaz y una capa es crucial, y hay que tener mucho cuidado al respecto.
+Cuarto, el modelo TCP/IP no distingue entre la capa física y la de enlace de datos. Éstas son completamente distintas. La capa física trata sobre las características de transmisión del cable de cobre, la fibra
+óptica y la comunicación inalámbrica. La tarea de la capa de enlace de datos es delimitar el inicio y el fin
+de las tramas, además de transmitirlas de un extremo al otro con el grado deseado de confiabilidad. Un
+modelo apropiado debe incluir ambas capas por separado. El modelo TCP/IP no hace esto.
+Por último, aunque los protocolos IP y TCP se diseñaron e implementaron con sumo cuidado, muchos
+de los otros protocolos se fueron creando según las necesidades del momento, producidos generalmente
+por un par de estudiantes de licenciatura que los mejoraban hasta fastidiarse. Después las implementaciones de los protocolos se distribuían en forma gratuita, lo cual trajo como consecuencia que se utilizaran
+amplia y profundamente en muchas partes y, por ende, eran difíciles de reemplazar. Algunos de ellos son
+un poco vergonzosos en la actualidad. Por ejemplo, el protocolo de terminal virtual TELNET se diseñó
+para una terminal de Teletipo mecánica de 10 caracteres por segundo. No sabe nada sobre las interfaces
+gráficas de usuario y los ratones. Sin embargo, aún se sigue usando a 30 años de su creación.
+1.5 REDES DE EJEMPLO
+El tema de las redes de computadoras cubre muchos tipos distintos de redes, grandes y pequeñas, populares y no tanto. Tienen distintos objetivos, escalas y tecnologías. En las siguientes secciones analizaremos
+algunos ejemplos para tener una idea de la variedad que podemos encontrar en el área de las redes de
+computadoras.
+Empezaremos con Internet, que tal vez sea la red más popular; analizaremos su historia, evolución y
+tecnología. Después consideraremos la red de teléfonos móviles. Técnicamente es muy distinta de Internet y contrasta muy bien con ella. Más adelante introduciremos el IEEE 802.11, el estándar dominante
+para las redes LAN inalámbricas. Por último, analizaremos las redes RFID y de sensores, tecnologías que
+extienden el alcance de la red para incluir al mundo físico y los objetos cotidianos.
+1.5.1 Internet
+En realidad Internet no es una red, sino una enorme colección de distintas redes que utilizan ciertos protocolos comunes y proveen ciertos servicios comunes. Es un sistema inusual en cuanto a que nadie la
+planeó y nadie la controla. Para comprender mejor esto, empecemos desde el inicio para ver cómo se ha
+desarrollado y por qué. Si desea leer una maravillosa historia de Internet, le recomendamos ampliamente
+el libro de Jim Naughton (2000). Es uno de esos libros inusuales que no sólo son divertidos, sino que también cuenta con 20 páginas de ibídems y obras citadas (ob. cit.) para el verdadero historiador. Una parte
+del material de esta sección se basa en ese libro.
+Claro que también se han escrito innumerables libros sobre Internet y sus protocolos. Para obtener
+más información puede consultar a Maufer (1999).
+                 
